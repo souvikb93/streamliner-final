@@ -459,3 +459,47 @@ if(isMod){sh.setAttribute('fill',col);
 If a state exists, it must be legible on **every** node kind. A state that renders
 on some shapes and not others is worse than no state at all, because the viewer
 learns a rule that then silently fails.
+
+---
+
+## 14. Progress rail: one shape, three states
+
+A step indicator has three states and **all three are pills**. The common failure
+is giving only the active and completed steps a surface and leaving upcoming ones
+as naked text — the row then reads as two components rather than one control with
+three states.
+
+| State | Surface | Border | Dot | Label |
+|---|---|---|---|---|
+| Upcoming | `#fff` | `#E9E9EC` | hollow, `#C9C9CE` ring | `#696970`, weight 500 |
+| Working | current group colour | transparent | pulsing white centre | `#fff`, weight 600 |
+| Done | `#E9F5EE` | `#C9E4D4` | green fill, white check | `#454548`, weight 500 |
+
+Same height, same radius, same padding in every state — only surface, border and
+dot change. Nothing moves when a step advances.
+
+```css
+.s{height:42px;padding:0 11px 0 9px;border-radius:12px;
+   border:1px solid var(--line);background:#fff;
+   transition:background .3s,color .3s,border-color .3s}
+.s.now {color:#fff;border-color:transparent;font-weight:600}
+.s.done{color:var(--ink2);background:#E9F5EE;border-color:#C9E4D4}
+```
+
+**Labels are Title Case here**, unlike body copy elsewhere in the kit. A step
+indicator is a set of named checkpoints, not a sentence, and Title Case is what
+separates "Exchange Approved" as a label from "Exchange approved" as a statement.
+This is the one deliberate exception to the sentence-case rule in §6.
+
+### Two traps this component hit
+
+**A global find-and-replace on label text will silently corrupt data.** The same
+string appears as both a milestone label and a step's result text. Replacing
+`,'Case created','` matched the *result* field first, so results became Title Case
+while the labels stayed lowercase. Rewrite the row through a regex with capture
+groups and edit the field by position, never by value.
+
+**Check which rule actually renders at the target width.** Padding was being tuned
+in the base `.s` rule while a `@media (max-width:1100px)` block was the one in
+force at 1072px, so two rounds of edits changed nothing. Measured width stayed
+identical to the byte — that identical number is the tell.
