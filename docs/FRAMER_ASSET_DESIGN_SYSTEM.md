@@ -414,3 +414,48 @@ the simulation is live.
 Every other asset switches between static views. Those use the toggle with **no
 dot at all** — not a grey dot, not a still dot. A dot that never changes is decoration
 pretending to be status.
+
+---
+
+## 13. Route colour: a rule, not a choice
+
+A route is three things at three different times, and each one has a fixed colour.
+
+**Before it runs** — `#C6C8CD`, 1.5px. Plumbing that exists but has not fired.
+
+**While the payload moves along it** — a gradient from the **source node's group
+colour** to the **target node's group colour**, drawn in user space along the leg:
+
+```js
+const from=CO(seq[i][0]), col=CO(seq[i+1][0]);
+g.setAttribute('x1',pts[0][0]); g.setAttribute('y1',pts[0][1]);
+g.setAttribute('x2',pts[pts.length-1][0]); g.setAttribute('y2',pts[pts.length-1][1]);
+```
+
+So data → finance leaves magenta and arrives green; finance → Streamliner leaves
+green and arrives blue. The line always *starts* in the colour of where it came
+from, which is what makes direction readable without an arrowhead.
+
+**After it completes** — green `#1E8A4C` at `.55` opacity, 2px. Same green as the
+progress-rail ticks, so "done" means one thing across the whole asset.
+
+A single `<linearGradient>` in `defs` is mutated per leg rather than one gradient
+per edge — only one leg is ever in flight, and a finished leg is repainted solid
+green, so nothing keeps a stale reference.
+
+### Every node kind must have all three states
+
+Audit finding worth recording: filled nodes had no visible `done` state. Outlined
+nodes dropped `stroke-opacity` `.45 → 1 → .3` across idle/work/done, but filled
+nodes were pinned at `fill-opacity:1`, so a completed module looked identical to an
+active one. Fixed:
+
+```js
+if(isMod){sh.setAttribute('fill',col);
+          sh.setAttribute('fill-opacity',s==='done'?.42:1);
+          sh.setAttribute('stroke-opacity',s==='done'?.42:1)}
+```
+
+If a state exists, it must be legible on **every** node kind. A state that renders
+on some shapes and not others is worse than no state at all, because the viewer
+learns a rule that then silently fails.

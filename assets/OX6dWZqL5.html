@@ -115,6 +115,7 @@ function rpath(p,hop,r=18){let d=`M${p[0][0]},${p[0][1]}`,prev=p[0];
  seg(prev,p[p.length-1]);return d}
 const defs=mk('defs',{});
 defs.innerHTML='<filter id="lift" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="6" stdDeviation="9" flood-color="#121212" flood-opacity="0.16"/></filter>'
+ +'<linearGradient id="flowg" gradientUnits="userSpaceOnUse"><stop id="gs0" offset="0"/><stop id="gs1" offset="1"/></linearGradient>'
  +'<filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#121212" flood-opacity="0.07"/></filter>';
 const LEG=mk('g',{});
 const edgeLayer=mk('g',{}),EL={};
@@ -147,7 +148,7 @@ for(const id in N){const n=N[id],g=mk('g',{},nodeLayer),inner=mk('g',{},g);G[id]
 }
 function nodeState(id,s,p){const n=N[id],sh=n.shape,isMod=n.k==='m',col=CO(id);
  sh.setAttribute('stroke',col);sh.setAttribute('stroke-width',s==='work'?2:1.5);
- if(isMod){sh.setAttribute('fill',col);sh.setAttribute('stroke-opacity',1)}
+ if(isMod){sh.setAttribute('fill',col);sh.setAttribute('fill-opacity',s==='done'?.42:1);sh.setAttribute('stroke-opacity',s==='done'?.42:1)}
  else{sh.setAttribute('fill','#fff');sh.setAttribute('stroke-opacity',s==='work'?1:s==='done'?.3:.45)}
  sh.setAttribute('filter',s==='work'?'url(#lift)':'url(#soft)');
  n.load.forEach(l=>{l.setAttribute('opacity',s==='work'?1:0);l.setAttribute('stroke-dasharray',`${s==='work'?(p||0)*100:0} 100`)});
@@ -206,9 +207,14 @@ const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
 function next(){if(i>=seq.length-1){phase='end';t=0;dur=END;markSteps();return}
  const [ek,rev]=edgeOf(seq[i][0],seq[i+1][0]),a=N[seq[i][0]],b=N[seq[i+1][0]];
  const pts=[[a.x,a.y],...(rev?E[ek].slice().reverse():E[ek]),[b.x,b.y]],d=rpath(pts,HOPS[ek]);
- const col=CO(seq[i+1][0]);
- path=mk('path',{d,fill:'none',stroke:col,'stroke-width':2.6,'stroke-linecap':'round','stroke-linejoin':'round'},trail);
- flow.innerHTML='';mk('path',{d,fill:'none',stroke:col,'stroke-width':2.6,'stroke-linecap':'round',opacity:.35,'stroke-dasharray':'1 13'},flow);
+ const from=CO(seq[i][0]),col=CO(seq[i+1][0]);
+ const g=document.getElementById('flowg');
+ g.setAttribute('x1',pts[0][0]);g.setAttribute('y1',pts[0][1]);
+ g.setAttribute('x2',pts[pts.length-1][0]);g.setAttribute('y2',pts[pts.length-1][1]);
+ document.getElementById('gs0').setAttribute('stop-color',from);
+ document.getElementById('gs1').setAttribute('stop-color',col);
+ path=mk('path',{d,fill:'none',stroke:'url(#flowg)','stroke-width':2.6,'stroke-linecap':'round','stroke-linejoin':'round'},trail);
+ flow.innerHTML='';mk('path',{d,fill:'none',stroke:'url(#flowg)','stroke-width':2.6,'stroke-linecap':'round',opacity:.35,'stroke-dasharray':'1 13'},flow);
  tokBg.setAttribute('fill',col);halo.setAttribute('fill',col);
  pathL=path.getTotalLength();path.style.strokeDasharray=`${pathL} ${pathL}`;path.style.strokeDashoffset=pathL;
  i++;phase='move';t=0;dur=reduce?.01:Math.max(1.5,pathL/SPEED);
@@ -237,7 +243,7 @@ function frame(now){const dt=Math.min(.05,(now-(lastNow||now))/1000);lastNow=now
     if(n.r)n.ring.setAttribute('r',n.r+g);
     else{n.ring.setAttribute('x',n.x-w/2-g);n.ring.setAttribute('y',n.y-h/2-g);n.ring.setAttribute('width',w+2*g);n.ring.setAttribute('height',h+2*g);n.ring.setAttribute('rx',(n.ch?17:11)+g)}}
    if(p>=1){phase='done';t=0;dur=HOLD;nodeState(id,'done');
-    if(path){path.setAttribute('stroke','#C6C8CD');path.setAttribute('stroke-width',2)}
+    if(path){path.setAttribute('stroke',GREEN);path.setAttribute('stroke-opacity',.55);path.setAttribute('stroke-width',2)}
     flow.innerHTML='';markSteps()}}
   else if(phase==='done'){if(p>=1)next()}
   else if(phase==='end'){if(p>=1)start(ORDER[(ORDER.indexOf(cur)+1)%3])}}
