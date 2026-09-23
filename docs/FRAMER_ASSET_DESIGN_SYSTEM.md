@@ -666,3 +666,35 @@ motion, so the eye tracks it without competition.
 **This rule stops at the diagram.** The progress rail keeps its own green state
 language (§14) — status colour and subject colour are different variables and must
 not be merged.
+
+### §16 addendum — the loader fills the node, and the token changes layer
+
+**The work state is now the done state, arriving.** A perimeter arc sweeping the
+stroke said "busy" but had nothing to do with the state that followed it. The node
+now fills with its own done tint, wiped in from the left, so when the wipe reaches
+100% the node is already in its finished state — no snap, no second animation.
+
+```js
+const cp=mk('clipPath',{id:'cw_'+id},defs);
+n.wipe=mk('rect',{x:x0,y:y0,width:0,height:h},cp);
+n.fillShape= /* same geometry as the node */ {fill:n.tint,'clip-path':`url(#cw_${id})`};
+// idle → width 0 | work → width * p | done → full width
+```
+
+The tint lives on a second shape clipped by a growing rect, not on the node's own
+`fill`, so the outline and label never change while it fills. The clip path is in
+the node's own user space, so it scales with the 1.3× transform for free.
+
+**The token passes under the node it leaves and over the node it lands on.**
+Previously the token layer sat above the nodes permanently, so a departing token
+slid across the face of the pill it had just finished with.
+
+```js
+function tokLayerOver(v){if(v===tokOver)return;tokOver=v;
+ v?svg.appendChild(tokLayer):svg.insertBefore(tokLayer,nodeLayer)}
+// move starts → under;  p>.4 → over
+```
+
+Guarded on a flag so the DOM reorder happens twice per leg, not sixty times a
+second. Leaving underneath reads as *departing*; arriving on top reads as
+*landing*, which is what the drop animation is already saying.
