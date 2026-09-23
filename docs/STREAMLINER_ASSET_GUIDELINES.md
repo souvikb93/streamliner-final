@@ -511,3 +511,33 @@ Review at 903, PDSL and OMEGA under Process & Track at 1104.
 `'cust-es':[P('cust','t'),[54,270],P('es','l')]`. The right port already carries
 the channel route, and two routes leaving the same point made the self-service
 path look like a branch of the phone call rather than an alternative to it.
+
+### Layout v8 — upper rows lifted, Disposition on the Create & Edit column
+
+| Row | y (was) | y (now) |
+|---|---|---|
+| ARB facility · Logistics | 92 | **72** |
+| ABACUS · OMEGA · Oracle payments | 186 | **166** |
+| Disposition & Recovery | 274 @ x 802 | **234 @ x 702** |
+| Main Streamliner row | 362 | 362 |
+
+Disposition & Recovery now sits directly above Create & Edit and to the left of
+ABACUS, which collapses its feed into a straight vertical:
+
+```js
+'ce-dr':[P('ce','t'),P('dr','b')]      // was a three-point elbow through [702,274]
+```
+
+An orthogonal router that produces a straight line is a sign the two nodes belong
+in the same column. It is worth moving a node to get one.
+
+`pt-ab` moved off `y:232` to `y:286` — with Disposition at `y:234`, the old lane
+ran two units from its edge, which reads as a collision even though it clears.
+Parallel lanes need to be obviously parallel or obviously separate; two units is
+neither.
+
+Risers followed their rows: `log-otm` and `log-cust` to `y:72`, `pay-cust` to
+`y:166`.
+
+Clearances re-checked at 1.3×: ABACUS to Disposition 19 units, Disposition to
+Create & Edit 86, ARB to ABACUS 39. Frame margins unchanged at 14 on all sides.
