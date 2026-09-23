@@ -54,6 +54,7 @@ const DEEP='#06356E',GREEN='#1E8A4C';
  const PAL={mod:'#0672CB',crm:'#7C3AED',ppl:'#57575C',data:'#B02071',log:'#A15C00',fin:'#0B6E4F'};
  const GRP={ce:'mod',vr:'mod',rm:'mod',pt:'mod',dr:'mod',sfdc:'crm',cust:'ppl',ch:'ppl',agent:'ppl',es:'ppl',bil:'data',pdsl:'data',delta:'data',arb:'log',log:'log',otm:'log',ab:'fin',om:'fin',pay:'fin'};
  const CO=id=>PAL[GRP[id]]||DEEP;
+const MIX=(hex,a)=>{const n=parseInt(hex.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255,m=v=>Math.round(v*a+255*(1-a));return '#'+((1<<24)+(m(r)<<16)+(m(g)<<8)+m(b)).toString(16).slice(1)};
 const NEU='#D9D9DE',NEUT='#454548';
 const M=362,W=124;
 const N={
@@ -76,7 +77,7 @@ const N={
  pay:{x:1268,y:186,w:W,t:'Oracle payments',k:'s'},
  arb:{x:1105,y:92,w:W,t:'ARB facility',k:'s'},
  log:{x:1268,y:92,w:W,t:'Logistics',k:'p'}};
-for(const id in N){const n=N[id];if(!n.r&&!n.h)n.h=38;n.col=CO(id)}
+for(const id in N){const n=N[id];if(!n.r&&!n.h)n.h=38;n.col=CO(id);n.tint=MIX(n.col,.06)}
 const P=(id,s)=>{const n=N[id];if(n.r)return s==='t'?[n.x,n.y-n.r]:s==='b'?[n.x,n.y+n.r]:s==='l'?[n.x-n.r,n.y]:[n.x+n.r,n.y];
  return s==='t'?[n.x,n.y-n.h/2]:s==='b'?[n.x,n.y+n.h/2]:s==='l'?[n.x-n.w/2,n.y]:[n.x+n.w/2,n.y]};
 const RET=[[1358,625],[50,625]];
@@ -148,7 +149,7 @@ for(const id in N){const n=N[id],g=mk('g',{},nodeLayer),inner=mk('g',{},g);G[id]
 }
 function nodeState(id,s,p){const n=N[id],sh=n.shape,isMod=n.k==='m',col=CO(id);
  sh.setAttribute('stroke',col);sh.setAttribute('stroke-width',s==='work'?2:1.5);
- if(isMod){sh.setAttribute('fill',col);sh.setAttribute('fill-opacity',s==='done'?.06:1);sh.setAttribute('stroke-opacity',s==='done'?.45:1);
+ if(isMod){sh.setAttribute('fill',s==='done'?n.tint:col);sh.setAttribute('fill-opacity',1);sh.setAttribute('stroke-opacity',s==='done'?.45:1);
    if(n.txt)n.txt.forEach(t=>t.setAttribute('fill',s==='done'?col:'#fff'))}
  else{sh.setAttribute('fill','#fff');sh.setAttribute('stroke-opacity',s==='work'?1:s==='done'?.3:.45)}
  sh.setAttribute('filter',s==='work'?'url(#lift)':'url(#soft)');
@@ -192,7 +193,7 @@ function markSteps(){const fin=j=>j<i||(j===i&&(phase==='done'||phase==='end'));
  $('steps').querySelectorAll('.sep').forEach(el=>el.classList.toggle('done',fin(+el.dataset.j)))}
 function focusRoute(){const ue=new Set(),un=new Set(seq.map(s=>s[0]));
  for(let j=1;j<seq.length;j++)ue.add(edgeOf(seq[j-1][0],seq[j][0])[0]);
- for(const k in EL){const u=ue.has(k);EL[k].setAttribute('stroke','#C6C8CD');EL[k].setAttribute('opacity',u?1:0)}
+ for(const k in EL){const u=ue.has(k);EL[k].setAttribute('stroke',u?'#C6C8CD':'#D9D9DE');EL[k].setAttribute('opacity',u?1:.34)}
  for(const id in G)G[id].style.opacity=un.has(id)?1:.34}
 function placeTok(pt){tokPt=pt;tok.setAttribute('transform',`translate(${pt[0]},${pt[1]}) scale(${tokSc})`);halo.setAttribute('cx',pt[0]);halo.setAttribute('cy',pt[1])}
 function showTok(v){tokSc=1;placeTok(tokPt);tok.setAttribute('opacity',v?1:0);if(!v)halo.setAttribute('opacity',0)}

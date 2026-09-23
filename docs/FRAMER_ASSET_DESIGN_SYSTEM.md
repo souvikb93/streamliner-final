@@ -543,3 +543,42 @@ if(n.txt) n.txt.forEach(t=>t.setAttribute('fill', s==='done' ? col : '#fff'));
 clears 4.5:1 against its own tinted background. At `.08` the worst group falls to
 4.41, at `.10` to 4.29. Pick the alpha from the worst case in the palette, not from
 the one you happen to be looking at.
+
+### Correction to §13 again — a tint must be opaque, not translucent
+
+The done tint was `fill-opacity:.06`, which is not a light fill, it is a **hole**.
+Routes are drawn centre-to-centre beneath the node layer, so the completed green
+line ran straight through every finished pill and across its label. It looked like
+the pill had been recoloured; it had actually gone transparent.
+
+Compute the tint as a solid colour and paint it at full opacity:
+
+```js
+const MIX=(hex,a)=>{const n=parseInt(hex.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255,
+ m=v=>Math.round(v*a+255*(1-a));
+ return '#'+((1<<24)+(m(r)<<16)+(m(g)<<8)+m(b)).toString(16).slice(1)};
+n.tint = MIX(n.col,.06);          // #0672CB -> #F0F7FC
+sh.setAttribute('fill', s==='done' ? n.tint : col);
+sh.setAttribute('fill-opacity', 1);
+```
+
+Rule: **opacity is for fading things out, not for making things lighter.** If the
+intent is a lighter colour, compute the lighter colour. Anything behind the shape
+will otherwise show through, and on a diagram there is always something behind.
+
+Label contrast against the opaque tints: mod 4.54, log 4.78, crm 5.21, fin 5.72,
+data 5.80, ppl 6.59.
+
+### Unused routes are dimmed, not hidden
+
+Hiding them entirely removed the ghost-rectangle problem but also removed the
+system: a viewer could no longer see that the other paths exist. They now match
+how unused *nodes* are treated — same `.34`, one step lighter in stroke:
+
+```js
+EL[k].setAttribute('stroke', u ? '#C6C8CD' : '#D9D9DE');
+EL[k].setAttribute('opacity', u ? 1 : .34);
+```
+
+Dimming rather than dashing is what keeps the ghost boxes away — it was the dash
+pattern, not the visibility, that made unused orthogonal routes read as containers.
