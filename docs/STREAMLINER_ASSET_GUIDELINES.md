@@ -480,3 +480,34 @@ an `n.mark` flag so any node can opt in without special-casing the renderer.
 
 **E-support** lifted 12 units to `y:270`, opening the gap between it and the main
 row.
+
+### Layout v7 — even gaps, not even pitch
+
+The main row mixes three widths: circles (80), the channel bar (34) and pills
+(124). Equal spacing between *centres* therefore does not look equal — the eye
+measures the white space between edges, not the distance between middles.
+
+The row is now spaced on a constant **77-unit edge gap**:
+
+| Node | x | edges |
+|---|---|---|
+| Customer | 54 | 14 – 94 |
+| Channels | 188 | 171 – 205 |
+| Care agent | 322 | 282 – 362 |
+| SFDC | 501 | 439 – 563 |
+| Create & Edit | 702 | 640 – 764 |
+| Verify & Review | 903 | 841 – 965 |
+| Process & Track | 1104 | 1042 – 1166 |
+
+Derived, not eyeballed: the row spans `14 → 1166`, the seven nodes total 690, so
+the 463 units left over divide into six gaps of 77. Every scaled node was then
+checked against both idle neighbours — worst clearance is 59 units.
+
+Everything below the row moved with it: E-support and Care agent share `x:322`,
+BIL/SODS sits under Create & Edit at 702, Return Method and ABACUS under Verify &
+Review at 903, PDSL and OMEGA under Process & Track at 1104.
+
+**Customer feeds E-support from the top of the circle**, not the side:
+`'cust-es':[P('cust','t'),[54,270],P('es','l')]`. The right port already carries
+the channel route, and two routes leaving the same point made the self-service
+path look like a branch of the phone call rather than an alternative to it.
