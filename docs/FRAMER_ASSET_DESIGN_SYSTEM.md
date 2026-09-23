@@ -362,3 +362,55 @@ if the colour is wrong the group is wrong, which is the useful failure.
    A static export of the same diagram needs a legend.
 4. Idle borders never drop below `stroke-opacity:.45` — below that the group
    colour is no longer identifiable.
+
+---
+
+## 12. The toggle
+
+Every asset that switches between two or more views uses the same control. Not a
+segmented track, not a row of buttons — one white capsule with a navy pill that
+slides behind the active label.
+
+```css
+.tabs{position:relative;flex:none;display:flex;gap:3px;background:#fff;
+ border:1px solid #D9D9DE;padding:4px;border-radius:999px;
+ box-shadow:0 1px 2px rgba(18,18,18,.04)}
+.tabs button{font:inherit;position:relative;z-index:1;display:flex;align-items:center;
+ height:34px;padding:0 14px;border:0;background:transparent;border-radius:999px;
+ color:#454548;font-size:13px;font-weight:600;cursor:pointer;transition:color .25s}
+.tabs button:hover{color:#121212}
+.tabs button.on{color:#fff}
+.tabs button:focus-visible{outline:2px solid #0672CB;outline-offset:3px}
+.tabs .pill{position:absolute;top:4px;left:4px;height:34px;border-radius:999px;
+ background:#06356E;z-index:0;
+ transition:transform .42s cubic-bezier(.34,1.24,.5,1),width .42s cubic-bezier(.34,1.24,.5,1)}
+@media (prefers-reduced-motion:reduce){.tabs .pill{transition:none}}
+```
+
+The pill is measured from the active button, never hard-coded:
+
+```js
+function movePill(){const b=document.querySelector('#tabs button.on');if(!b)return;
+ _pill.style.width=b.offsetWidth+'px';_pill.style.height=b.offsetHeight+'px';
+ _pill.style.transform='translateX('+(b.offsetLeft-4)+'px) translateY('+(b.offsetTop-4)+'px)'}
+```
+
+Reading `offsetHeight` as well as `offsetWidth` matters: mobile media queries raise
+the button to a 44px touch target, and a hard-coded 34px pill would sit short of it.
+
+Three things must re-run it or the pill drifts:
+
+1. **after the click** — `setTimeout(movePill,0)` so it lands after the existing handler
+2. **`document.fonts.ready`** — the webfont changes label widths on arrival
+3. **a `ResizeObserver` on the container** — catches reflow the other two miss
+
+### The status dot
+
+The dot is **optional and rare**. Only an asset whose toggle selects a *running*
+process earns one — in this set that is the to-be system diagram alone, where the
+dot blinks green (`#3DDC84`, 1.3s, opacity 1 → .4 plus an expanding glow) to say
+the simulation is live.
+
+Every other asset switches between static views. Those use the toggle with **no
+dot at all** — not a grey dot, not a still dot. A dot that never changes is decoration
+pretending to be status.

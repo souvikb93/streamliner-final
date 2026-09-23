@@ -21,15 +21,14 @@ body{display:block!important}
 .ro{min-width:0}
 .ro em{display:block;font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.06em;color:var(--ink3);margin-bottom:3px}
 .ro b{display:flex;align-items:center;justify-content:flex-end;gap:8px;font-size:17px;font-weight:600;line-height:1.25;letter-spacing:-.01em;transition:color .3s}
-.ro b .sw{width:9px;height:9px;border-radius:3px;flex:none;transition:background .3s}
 .ro p{font-size:13.5px;line-height:1.4;color:var(--ink2);min-height:19px}
 .ro.act{border-top:1px solid var(--line);padding-top:11px}
-.canvas{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 24px 12px;box-shadow:0 1px 2px rgba(18,18,18,.03)}
+.canvas{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 1px 2px rgba(18,18,18,.03)}
 svg.map{display:block;width:100%;height:auto;overflow:visible}
 .lab{font-family:'Uncut Sans';pointer-events:none;user-select:none}
-.steps{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;min-height:76px;align-content:flex-start}
-.s{flex:none;display:flex;align-items:center;gap:7px;height:28px;padding:0 11px 0 7px;border-radius:999px;font-size:12px;font-weight:500;color:var(--ink3);white-space:nowrap;transition:background .35s,color .35s}
-.s .dot{width:14px;height:14px;border-radius:50%;border:1.5px solid #D9D9DE;background:#fff;display:grid;place-items:center;transition:all .35s}
+.steps{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-wrap:nowrap;align-items:center;min-height:56px}
+.s{flex:none;display:flex;align-items:center;gap:6px;height:28px;padding:0 10px 0 6px;border-radius:999px;font-size:12px;font-weight:500;color:var(--ink3);white-space:nowrap;transition:background .35s,color .35s}
+.s .dot{width:13px;height:13px;border-radius:50%;border:1.5px solid #D9D9DE;background:#fff;display:grid;place-items:center;transition:all .35s}
 .s.done{color:var(--ink2);background:#E9F5EE}
 .s.done .dot{background:var(--green);border-color:var(--green)}
 .s.done .dot::after{content:"";width:5px;height:3px;border-left:1.7px solid #fff;border-bottom:1.7px solid #fff;transform:translateY(-1px) rotate(-45deg)}
@@ -37,19 +36,19 @@ svg.map{display:block;width:100%;height:auto;overflow:visible}
 .s.now .dot{border-color:rgba(255,255,255,.7);background:transparent}
 .s.now .dot::after{content:"";width:6px;height:6px;border-radius:50%;background:#fff;animation:pu 1.4s ease-in-out infinite}
 @keyframes pu{50%{transform:scale(.5);opacity:.6}}
-.sep{flex:none;width:14px;height:2px;background:var(--line);margin:0 4px;border-radius:2px;transition:background .35s}
+.sep{flex:1 1 0;min-width:5px;max-width:18px;height:2px;background:var(--line);margin:0 3px;border-radius:2px;transition:background .35s}
 .sep.done{background:var(--green)}
-@media (max-width:1100px){.s{font-size:11.5px;padding:0 9px 0 6px}}
+@media (max-width:1100px){.s{font-size:11px;padding:0 8px 0 5px}}
 @media (min-width:900px){body{min-height:700px}}
-@media (max-width:760px){.top{flex-direction:column;align-items:stretch;gap:16px}.pick{align-self:stretch;overflow-x:auto;justify-content:flex-start}.readout{max-width:100%;text-align:left}.ro b{justify-content:flex-start}.canvas{overflow-x:auto;-webkit-overflow-scrolling:touch}.canvas>.map{width:900px;min-width:900px}.steps{flex-wrap:nowrap;min-width:900px;min-height:52px}}
-@media (max-width:440px){.opt{height:40px}.canvas{padding:14px 14px 10px}.ro b{font-size:15px}}
+@media (max-width:760px){.top{flex-direction:column;align-items:stretch;gap:16px}.pick{align-self:stretch;overflow-x:auto;justify-content:flex-start}.readout{max-width:100%;text-align:left}.ro b{justify-content:flex-start}.canvas{overflow-x:auto;-webkit-overflow-scrolling:touch}.canvas>.map{width:900px;min-width:900px}.steps{min-width:1000px;min-height:52px}}
+@media (max-width:440px){.opt{height:40px}.canvas{padding:16px}.ro b{font-size:15px}}
 @media (prefers-reduced-motion:reduce){.s.now .dot::after{animation:none}.pill{transition:none}.opt.on i{animation:none}}
 </style></head><body>
 <div class="app">
  <div class="top">
   <div class="pick" id="pick" role="tablist" aria-label="Request type"><span class="pill" id="pill"></span></div>
   <div class="readout" aria-live="polite">
-   <div class="ro"><em id="apl">Application</em><b id="apn"><span class="sw" id="asw"></span><span id="ap"></span></b></div>
+   <div class="ro"><em id="apl">Application</em><b id="apn"><span id="ap"></span></b></div>
    <div class="ro act"><em>Action</em><p id="ac"></p></div>
   </div>
  </div>
@@ -170,20 +169,20 @@ const ICON={doc:'<path d="M6 2h8l4 4v14H6z"/><path d="M14 2v4h4M9 11h6M9 15h6"/>
  gift:'<rect x="4" y="9" width="16" height="11" rx="1"/><path d="M3 9h18M12 9v11M12 9c-2-4-6-4-6-1s6 1 6 1 6 2 6-1-4-3-6 1"/>',tag:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8" r="1.5"/>'};
 const LGC=[['mod','Streamliner'],['crm','Case system'],['ppl','People'],['data','Data'],['log','Logistics'],['fin','Finance']];
 const LGI=[['doc','Request'],['ok','Approval'],['box','Package'],['card','Payment'],['gift','Replacement'],['tag','Return label']];
-mk('rect',{x:16,y:20,width:236,height:160,rx:14,fill:'#fff',stroke:'#E9E9EC','stroke-width':1},LEG);
-LGC.forEach((r,i)=>{const y=48+i*23;
- mk('rect',{x:30,y:y-8,width:9,height:9,rx:3,fill:PAL[r[0]]},LEG);
- txt(45,y,r[1],11,LEG,500,'#454548','start')});
-LGI.forEach((r,i)=>{const y=48+i*23;
- const gi=mk('g',{transform:`translate(146,${y-12}) scale(.6)`,fill:'none',stroke:'#454548','stroke-width':2.2,'stroke-linecap':'round','stroke-linejoin':'round'},LEG);
+mk('rect',{x:0,y:0,width:236,height:158,rx:14,fill:'#fff',stroke:'#E9E9EC','stroke-width':1},LEG);
+LGC.forEach((r,i)=>{const y=28+i*23;
+ mk('rect',{x:16,y:y-8,width:9,height:9,rx:3,fill:PAL[r[0]]},LEG);
+ txt(31,y,r[1],11,LEG,500,'#454548','start')});
+LGI.forEach((r,i)=>{const y=28+i*23;
+ const gi=mk('g',{transform:`translate(132,${y-12}) scale(.6)`,fill:'none',stroke:'#454548','stroke-width':2.2,'stroke-linecap':'round','stroke-linejoin':'round'},LEG);
  gi.innerHTML=ICON[r[0]];
- txt(165,y,r[1],11,LEG,500,'#454548','start')});
+ txt(151,y,r[1],11,LEG,500,'#454548','start')});
 const halo=mk('circle',{r:22,fill:DEEP,opacity:0},tokLayer);
 const tok=mk('g',{},tokLayer);
 const tokBg=mk('circle',{r:13,fill:DEEP,stroke:'#fff','stroke-width':2.5,filter:'url(#lift)'},tok);
 const tokIcon=mk('g',{transform:'translate(-6.5,-6.5) scale(.54)',fill:'none',stroke:'#fff','stroke-width':2.8,'stroke-linecap':'round','stroke-linejoin':'round'},tok);
 const NAME={cust:'Customer',ch:'Channels',es:'E-support',agent:'Care Agent',sfdc:'SFDC',ce:'Create & Edit',bil:'BIL / SODS',vr:'Verify & Review',dr:'Disposition & Recovery',pt:'Process & Track',rm:'Return Method',pdsl:'PDSL',delta:'Delta · RIMS',otm:'OTM',ab:'ABACUS',om:'OMEGA',pay:'Oracle payment portal',arb:'ARB facility',log:'Logistics'};
-const F={  credit:[   ['cust','Customer has a billing issue','Request raised','','doc'],   ['ch','Contacts Dell by phone, chat or email','Routed to an agent','','doc'],   ['agent','Care agent listens and finds the order','Issue captured','Customer calls','doc'],   ['sfdc','Searching the order, deciding the resolution','Case created','Case created','doc'],   ['ce','Opening the credit canvas from the case','Canvas open','','doc'],   ['bil','Fetching order details from SODS','Order details returned','','doc'],   ['ce','Validating policy, raising the credit request','CRE raised with case ID','CRE raised','doc'],   ['vr','Business rules: policy period, CRE history, price match','Approved','Rules check','ok'],   ['pt','Reading the approval, building the credit payload','Payload ready','Payload built','ok'],   ['ab','Requesting the credit note from finance','Request sent to OMEGA','','card'],   ['om','Finance processing the credit amount','Credit processed','Credit processed','card'],   ['ab','Returning the finance response','Response sent to P&T','','card'],   ['pt','Saving the result in the P&T database','Status saved','','ok'],   ['ce','Updating the credit request status','Status updated','','ok'],   ['sfdc','Notifying the care agent in Salesforce','Agent notified','Case updated','ok'],   ['agent','Care agent confirms the credit','Customer informed','','ok'],   ['ch','Reaching the customer','Message delivered','','card'],   ['cust','Customer receives the credit','Credit received','Credit received','card']],  return:[   ['cust','Customer wants to return an item','Request raised','','doc'],   ['es','Starting a return on Dell.com','Online request submitted','Request online','doc'],   ['ce','Creating the return request','Request opened','','doc'],   ['bil','Fetching order and box code from SODS','Details returned','','doc'],   ['ce','Validating policy, creating the CRE number','CRE created','CRE created','doc'],   ['vr','Business rules decide: approve, reject or hold','Approved','Rules check','ok'],   ['pt','Tracking the approved return','Tracking started','','ok'],   ['rm','Getting approved-request details, choosing the method','Return method set','Return method','tag'],   ['pdsl','Providing box code and weight','Product data returned','','tag'],   ['rm','Preparing shipping details','Ready to ship','','tag'],   ['otm','Updating waybill details','Waybill ready','Waybill','tag'],   ['log','Scheduling the pickup','Pickup booked','','box'],   ['cust','Courier collects the package','Package handed over','Pickup','box'],   ['log','Package in transit','Delivered to facility','','box'],   ['arb','Item dropped at the ARB facility','Item received','At ARB facility','box'],   ['dr','Inspecting the item, forwarding details to P&T','Inspection passed','Inspected','ok'],   ['pt','Recording the received item','Refund triggered','','ok'],   ['ab','Requesting the refund from finance','Request sent to OMEGA','','card'],   ['om','Finance processing the refund amount','Refund processed','Refund processed','card'],   ['pay','Sending the final refund to the Oracle global payment portal','Refund paid out','','card'],   ['cust','Refund reaches the customer','Money back','Money back','card']],  exchange:[   ['cust','Customer has a faulty product','Request raised','','doc'],   ['ch','Contacts Dell by phone, chat or email','Routed to an agent','','doc'],   ['agent','Care agent troubleshoots, agrees an exchange','Issue captured','Customer calls','doc'],   ['sfdc','Creating a case in Salesforce','Case created','Case created','doc'],   ['ce','Opening the exchange request','Request opened','','doc'],   ['bil','Fetching order details from SODS','Details returned','','doc'],   ['ce','Validating policy, creating the CRE number','CRE created','CRE created','doc'],   ['vr','Business rules decide: approve, reject or hold','Approved','Rules check','ok'],   ['rm','Choosing how the faulty unit comes back','Return method set','','tag'],   ['pdsl','Providing box code and weight','Product data returned','','tag'],   ['rm','Preparing shipping details','Ready to ship','','tag'],   ['otm','Updating waybill details','Waybill ready','Waybill','tag'],   ['log','Scheduling the pickup','Pickup booked','','box'],   ['cust','Courier collects the faulty unit','Package handed over','Pickup','box'],   ['log','Package in transit','Delivered to facility','','box'],   ['arb','Item dropped at the ARB facility','Item received','','box'],   ['dr','Inspecting the item, forwarding details to P&T','Inspection passed','Inspected','ok'],   ['pt','Approving the replacement','Replacement approved','','ok'],   ['delta','Creating the replacement order in Delta / RIMS','Order created','Replacement order','gift'],   ['pt','Tracking the replacement','Tracking started','','gift'],   ['rm','Setting up the delivery','Delivery method set','','gift'],   ['otm','Creating the delivery waybill','Waybill ready','','gift'],   ['log','Shipping the replacement','Out for delivery','Shipped','gift'],   ['cust','Replacement reaches the customer','Delivered','Delivered','gift']] };
+const F={  credit:[   ['cust','Customer has a billing issue','Request raised','','doc'],   ['ch','Contacts Dell by phone, chat or email','Routed to an agent','','doc'],   ['agent','Care agent listens and finds the order','Issue captured','Call logged','doc'],   ['sfdc','Searching the order, deciding the resolution','Case open','Case open','doc'],   ['ce','Opening the credit canvas from the case','Canvas open','','doc'],   ['bil','Fetching order details from SODS','Order details returned','','doc'],   ['ce','Validating policy, raising the credit request','CRE raised with case ID','Credit raised','doc'],   ['vr','Business rules: policy period, CRE history, price match','Approved','Rules pass','ok'],   ['pt','Reading the approval, building the credit payload','Payload ready','Payload set','ok'],   ['ab','Requesting the credit note from finance','Request sent to OMEGA','','card'],   ['om','Finance processing the credit amount','Credit paid','Credit paid','card'],   ['ab','Returning the finance response','Response sent to P&T','','card'],   ['pt','Saving the result in the P&T database','Status saved','','ok'],   ['ce','Updating the credit request status','Status updated','','ok'],   ['sfdc','Notifying the care agent in Salesforce','Agent notified','Agent told','ok'],   ['agent','Care agent confirms the credit','Customer informed','','ok'],   ['ch','Reaching the customer','Message delivered','','card'],   ['cust','Customer receives the credit','Money back','Money back','card']],  return:[   ['cust','Customer wants to return an item','Request raised','','doc'],   ['es','Starting a return on Dell.com','Online request submitted','Online form','doc'],   ['ce','Creating the return request','Request opened','','doc'],   ['bil','Fetching order and box code from SODS','Details returned','','doc'],   ['ce','Validating policy, creating the CRE number','Case open','Case open','doc'],   ['vr','Business rules decide: approve, reject or hold','Approved','Rules pass','ok'],   ['pt','Tracking the approved return','Tracking started','','ok'],   ['rm','Getting approved-request details, choosing the method','Return method set','Method set','tag'],   ['pdsl','Providing box code and weight','Product data returned','','tag'],   ['rm','Preparing shipping details','Ready to ship','','tag'],   ['otm','Updating waybill details','Waybill ready','Waybill','tag'],   ['log','Scheduling the pickup','Pickup booked','','box'],   ['cust','Courier collects the package','Package handed over','Picked up','box'],   ['log','Package in transit','Delivered to facility','','box'],   ['arb','Item dropped at the ARB facility','Item received','At warehouse','box'],   ['dr','Inspecting the item, forwarding details to P&T','Inspection passed','Inspected','ok'],   ['pt','Recording the received item','Refund triggered','','ok'],   ['ab','Requesting the refund from finance','Request sent to OMEGA','','card'],   ['om','Finance processing the refund amount','Refunded','Refunded','card'],   ['pay','Sending the final refund to the Oracle global payment portal','Refund paid out','','card'],   ['cust','Refund reaches the customer','Money back','Money back','card']],  exchange:[   ['cust','Customer has a faulty product','Request raised','','doc'],   ['ch','Contacts Dell by phone, chat or email','Routed to an agent','','doc'],   ['agent','Care agent troubleshoots, agrees an exchange','Issue captured','Call logged','doc'],   ['sfdc','Creating a case in Salesforce','Case open','Case open','doc'],   ['ce','Opening the exchange request','Request opened','','doc'],   ['bil','Fetching order details from SODS','Details returned','','doc'],   ['ce','Validating policy, creating the CRE number','Case open','Case open','doc'],   ['vr','Business rules decide: approve, reject or hold','Approved','Rules pass','ok'],   ['rm','Choosing how the faulty unit comes back','Return method set','','tag'],   ['pdsl','Providing box code and weight','Product data returned','','tag'],   ['rm','Preparing shipping details','Ready to ship','','tag'],   ['otm','Updating waybill details','Waybill ready','Waybill','tag'],   ['log','Scheduling the pickup','Pickup booked','','box'],   ['cust','Courier collects the faulty unit','Package handed over','Picked up','box'],   ['log','Package in transit','Delivered to facility','','box'],   ['arb','Item dropped at the ARB facility','Item received','','box'],   ['dr','Inspecting the item, forwarding details to P&T','Inspection passed','Inspected','ok'],   ['pt','Approving the replacement','Replacement approved','','ok'],   ['delta','Creating the replacement order in Delta / RIMS','Order created','Reordered','gift'],   ['pt','Tracking the replacement','Tracking started','','gift'],   ['rm','Setting up the delivery','Delivery method set','','gift'],   ['otm','Creating the delivery waybill','Waybill ready','','gift'],   ['log','Shipping the replacement','Out for delivery','Shipped','gift'],   ['cust','Replacement reaches the customer','Delivered','Delivered','gift']] };
 const edgeOf=(a,b)=>E[a+'-'+b]?[a+'-'+b,0]:E[b+'-'+a]?[b+'-'+a,1]:null;
 const ORDER=['credit','return','exchange'];
 const PICKS=[['credit','Credit'],['return','Return'],['exchange','Exchange']];
@@ -193,7 +192,7 @@ const $=id=>document.getElementById(id);
 $('pick').insertAdjacentHTML('beforeend',PICKS.map(p=>`<button class="opt" data-k="${p[0]}" role="tab"><i></i>${p[1]}</button>`).join(''));
 let cur,seq,i,phase,t,dur,paused=false,path=null,pathL=0,lastNow=0,dash=0,tokSc=1,tokPt=[0,0];
 function movePill(){const b=document.querySelector('.opt.on');if(!b)return;
- const p=$('pill');p.style.width=b.offsetWidth+'px';p.style.transform=`translateX(${b.offsetLeft-4}px)`}
+ const p=$('pill');p.style.width=b.offsetWidth+'px';p.style.height=b.offsetHeight+'px';p.style.transform=`translateX(${b.offsetLeft-4}px) translateY(${b.offsetTop-4}px)`}
 function milestones(){return seq.map((s,j)=>({s,j})).filter(o=>o.s[3])}
 function renderSteps(){$('steps').innerHTML=milestones().map((o,k)=>`${k?'<span class="sep" data-j="'+o.j+'"></span>':''}<span class="s" data-j="${o.j}"><span class="dot"></span><span class="lb">${o.s[3]}</span></span>`).join('')}
 function markSteps(){const fin=j=>j<i||(j===i&&(phase==='done'||phase==='end'));
@@ -203,7 +202,6 @@ function markSteps(){const fin=j=>j<i||(j===i&&(phase==='done'||phase==='end'));
  $('steps').querySelectorAll('.sep').forEach(el=>el.classList.toggle('done',fin(+el.dataset.j)))}
 function setStatus(kind){const s=seq[i],id=s[0],col=CO(id);
  $('apl').textContent=N[id].k==='p'?'Actor':'Application';$('ap').textContent=NAME[id];
- $('asw').style.background=col;
  $('apn').style.color=col;
  $('ac').textContent=kind==='work'?s[1]:kind==='done'?s[2]:`Handing over to ${NAME[id]}`}
 function focusRoute(){const ue=new Set(),un=new Set(seq.map(s=>s[0]));
@@ -263,4 +261,4 @@ addEventListener('resize',()=>{movePill()});
 document.addEventListener('visibilitychange',()=>{paused=document.hidden});
 start('credit');requestAnimationFrame(frame);
 if(document.fonts)document.fonts.ready.then(movePill);
-</script></body></html>
+ if(window.ResizeObserver)new ResizeObserver(movePill).observe($('pick')); </script></body></html>
