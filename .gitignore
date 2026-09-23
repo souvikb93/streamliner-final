@@ -1,0 +1,5 @@
+node_modules/
+.DS_Store
+*.esc
+*.raw
+shot_*.png
