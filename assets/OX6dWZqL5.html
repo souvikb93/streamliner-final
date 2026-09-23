@@ -56,12 +56,13 @@ const DEEP='#06356E',GREEN='#1E8A4C';
  const CO=id=>PAL[GRP[id]]||DEEP;
 const MIX=(hex,a)=>{const n=parseInt(hex.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255,m=v=>Math.round(v*a+255*(1-a));return '#'+((1<<24)+(m(r)<<16)+(m(g)<<8)+m(b)).toString(16).slice(1)};
 const NEU='#D9D9DE',NEUT='#454548';
+const ACT={user:'<circle cx="12" cy="8" r="4"/><path d="M4.5 21c0-4.2 3.4-7.5 7.5-7.5s7.5 3.3 7.5 7.5"/>',head:'<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="1.5" y="13" width="5" height="8" rx="2.5"/><rect x="17.5" y="13" width="5" height="8" rx="2.5"/><path d="M20 21a4 4 0 0 1-4 3.5h-2.5"/>'};
 const M=362,W=124;
 const N={
- cust:{x:50,y:M,r:36,t:'Customer',k:'p'},
+ cust:{x:54,y:M,r:40,t:'Customer',k:'p',ico:'user'},
  ch:{x:142,y:M,w:34,h:88,k:'p',ch:1},
  es:{x:265,y:270,w:W,t:'E-support',k:'p'},
- agent:{x:265,y:M,w:W,t:'Care agent',k:'p',mark:1},
+ agent:{x:265,y:M,r:40,t:'Care agent',k:'p',ico:'head'},
  sfdc:{x:475,y:M,w:W,t:'SFDC',k:'s'},
  ce:{x:685,y:M,w:W,t:'Create & Edit',k:'m'},
  dr:{x:790,y:274,w:W,h:46,t:'Disposition',t2:'& Recovery',k:'m'},
@@ -80,7 +81,7 @@ const N={
 for(const id in N){const n=N[id];if(!n.r&&!n.h)n.h=38;n.col=CO(id);n.tint=MIX(n.col,.06)}
 const P=(id,s)=>{const n=N[id];if(n.r)return s==='t'?[n.x,n.y-n.r]:s==='b'?[n.x,n.y+n.r]:s==='l'?[n.x-n.r,n.y]:[n.x+n.r,n.y];
  return s==='t'?[n.x,n.y-n.h/2]:s==='b'?[n.x,n.y+n.h/2]:s==='l'?[n.x-n.w/2,n.y]:[n.x+n.w/2,n.y]};
-const RET=[[1358,625],[50,625]];
+const RET=[[1358,625],[54,625]];
 const E={
  'cust-ch':[P('cust','r'),P('ch','l')],'ch-agent':[P('ch','r'),P('agent','l')],
  'agent-sfdc':[P('agent','r'),P('sfdc','l')],'sfdc-ce':[P('sfdc','r'),P('ce','l')],
@@ -128,19 +129,17 @@ for(const id in N){const n=N[id],g=mk('g',{},nodeLayer),inner=mk('g',{},g);G[id]
  n.sc=1;n.vel=0;n.target=1;
  const isMod=n.k==='m',col=CO(id);
  if(n.r){n.shape=mk('circle',{cx:n.x,cy:n.y,r:n.r,fill:'#fff',stroke:col,'stroke-opacity':.45,'stroke-width':1.5,filter:'url(#soft)',style:'transition:stroke .4s,stroke-width .4s,stroke-opacity .4s'},inner);
-  const ic=mk('g',{transform:`translate(${n.x-8.6},${n.y-23}) scale(.72)`,fill:'none',stroke:col,'stroke-width':2,'stroke-linecap':'round',style:'transition:stroke .4s'},inner);n.ic=ic;
-  mk('circle',{cx:9,cy:7,r:4},ic);mk('path',{d:'M2 21c0-4 3-7 7-7s7 3 7 7'},ic);mk('path',{d:'M16 3.5a4 4 0 0 1 0 7M18.5 14c2.5 1 4 3 4 7'},ic);
-  txt(n.x,n.y+19,n.t,10,inner,600,col);
+  const ic=mk('g',{transform:`translate(${n.x-11},${n.y-25}) scale(.92)`,fill:'none',stroke:col,'stroke-width':1.9,'stroke-linecap':'round','stroke-linejoin':'round',style:'transition:stroke .4s'},inner);n.ic=ic;
+  ic.innerHTML=ACT[n.ico||'user'];
+  n.txt=[txt(n.x,n.y+18,n.t,11,inner,600,col)];
  }else{
   n.shape=mk('rect',{x:n.x-n.w/2,y:n.y-n.h/2,width:n.w,height:n.h,rx:n.ch?17:11,
    fill:isMod?col:'#fff',stroke:col,'stroke-opacity':isMod?1:.45,'stroke-width':1.5,filter:'url(#soft)',
    style:'transition:fill .4s,stroke .4s,stroke-width .4s,stroke-opacity .4s'},inner);
   if(n.ch){['M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2','M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-4-1L3 20l1.3-4.6A8.4 8.4 0 1 1 21 11.5z','M3 6h18v12H3zM3 7l9 6 9-6'].forEach((d,i)=>{
    const gg=mk('g',{transform:`translate(${n.x-6.5},${n.y-32+i*24}) scale(.55)`,fill:'none',stroke:col,'stroke-width':2.4,'stroke-linejoin':'round',style:'transition:stroke .4s'},inner);mk('path',{d},gg);if(!n.icg)n.icg=[];n.icg.push(gg)})}
-  else{const lines=n.t2?[n.t,n.t2]:[n.t],off=n.mark?10:0;
-   if(n.mark){const gm=mk('g',{transform:`translate(${n.x-39},${n.y-8}) scale(.62)`,fill:'none',stroke:col,'stroke-width':2.2,'stroke-linecap':'round','stroke-linejoin':'round',style:'transition:stroke .4s'},inner);
-    gm.innerHTML='<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="1.5" y="13.5" width="5" height="8" rx="2.5"/><rect x="17.5" y="13.5" width="5" height="8" rx="2.5"/><path d="M20 21.5a4 4 0 0 1-4 3.5h-3"/>'}
-   n.txt=lines.map((l,i)=>txt(n.x+off,n.y+4+(i-(lines.length-1)/2)*15,l,12,inner,600,isMod?'#fff':col))}}
+  else{const lines=n.t2?[n.t,n.t2]:[n.t];
+   n.txt=lines.map((l,i)=>txt(n.x,n.y+4+(i-(lines.length-1)/2)*15,l,12,inner,600,isMod?'#fff':col))}}
  const w=n.r?n.r*2:n.w,h=n.r?n.r*2:n.h;
  const r0=n.r?n.r:Math.min(n.ch?17:11,h/2),x0=n.x-w/2,x1=n.x+w/2,y0=n.y-h/2,y1=n.y+h/2;
  const half=tp=>n.r?`M${x0},${n.y} A${n.r},${n.r} 0 0 ${tp?1:0} ${x1},${n.y}`

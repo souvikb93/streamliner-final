@@ -582,3 +582,42 @@ EL[k].setAttribute('opacity', u ? 1 : .34);
 
 Dimming rather than dashing is what keeps the ghost boxes away — it was the dash
 pattern, not the visibility, that made unused orthogonal routes read as containers.
+
+---
+
+## 15. Shape carries category
+
+Colour was already doing one job (which group a node belongs to). Shape now does
+another: **a human actor is a circle, a system is a pill.**
+
+| Node | Shape | Why |
+|---|---|---|
+| Customer, Care agent | circle, `r:40` | people |
+| Channels | tall rounded bar | a stack of contact methods, not a person |
+| E-support | pill | a self-service portal, not a person |
+| Everything else | pill | systems and services |
+
+A viewer can now tell a human from a system before reading a single word, which
+is the point of shape coding. It also means the two ends of the flow — the person
+who asks and the person who helps — read as the same kind of thing.
+
+### Sizing inside a circle
+
+A circle is a worse container than a rectangle: usable width shrinks as you move
+away from the centre line. At `r:40`, the chord 18px below centre is 73px wide,
+which is what sets the label budget.
+
+```js
+const ic=mk('g',{transform:`translate(${n.x-11},${n.y-25}) scale(.92)`, …});
+ic.innerHTML=ACT[n.ico||'user'];          // 22px glyph, 1.9 stroke
+n.txt=[txt(n.x,n.y+18,n.t,11,inner,600,col)];   // 11px label, ≤73px wide
+```
+
+Icon 22px, label 11px, both centred on the vertical axis with the icon above. The
+earlier attempt used a 10px label in an `r:36` circle — legible only just, and
+visibly smaller than every other label in the asset. If a label has to drop below
+the body size to fit its container, the container is too small; grow the container
+rather than shrinking the type.
+
+Actor icons live in one `ACT` map keyed by `n.ico`, so adding an actor is one entry
+plus one node property — the renderer does not grow a special case per person.
