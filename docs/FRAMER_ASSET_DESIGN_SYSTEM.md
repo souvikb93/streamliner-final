@@ -314,11 +314,11 @@ travelling token, connector on approach, and the readout swatch.
 | Group | Meaning | Token |
 |---|---|---|
 | `mod` | The product being designed (primary) | `#0672CB` |
-| `crm` | System of record / case system | `#3B4FD8` |
-| `ppl` | People and channels (human actors) | `#5B6B7F` |
-| `data` | Data and catalogue services | `#0C6A86` |
-| `log` | Logistics and physical movement | `#217265` |
-| `fin` | Finance and payments | `#6C5CE0` |
+| `crm` | System of record / case system | `#7C3AED` |
+| `ppl` | People and channels (human actors) | `#57575C` |
+| `data` | Data and catalogue services | `#B02071` |
+| `log` | Logistics and physical movement | `#A15C00` |
+| `fin` | Finance and payments | `#0B6E4F` |
 
 All six sit in the same blue-violet-teal band as the rest of the kit; none is a
 hue the brand does not already use. Every one clears 4.5:1 on white, so the same
@@ -326,7 +326,7 @@ token can carry 12px labels — no separate "text version" of a group colour.
 
 Contrast as shipped (on `#FFFFFF`): mod 4.62, crm 6.72, ppl 5.63, data 6.14,
 log 5.74, fin 6.19. Two candidates were rejected on this test and darkened:
-`#2F8F7F` → `#217265`, `#0E7C9B` → `#0C6A86`.
+`#2F8F7F` → `#A15C00`, `#0E7C9B` → `#B02071`.
 
 ### Fill vs outline
 
@@ -344,7 +344,7 @@ enterprise systems are legible context.
 ### Implementation
 
 ```js
-const PAL={mod:'#0672CB',crm:'#3B4FD8',ppl:'#5B6B7F',data:'#0C6A86',log:'#217265',fin:'#6C5CE0'};
+const PAL={mod:'#0672CB',crm:'#7C3AED',ppl:'#57575C',data:'#B02071',log:'#A15C00',fin:'#0B6E4F'};
 const GRP={ce:'mod',vr:'mod',/* … */ arb:'log',om:'fin'};
 const CO=id=>PAL[GRP[id]]||DEEP;
 ```

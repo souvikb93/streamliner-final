@@ -214,11 +214,11 @@ Nodes are coloured by group, not individually. `CO(id)` resolves every colour.
 | Group | Nodes | Hex | Contrast on white |
 |---|---|---|---|
 | Streamliner modules | Create & Edit, Verify & Review, Process & Track, Return Method, Disposition & Recovery | `#0672CB` | 4.62 |
-| Case system | SFDC | `#3B4FD8` | 6.72 |
-| People & channels | Customer, Channels, Care Agent, E-support | `#5B6B7F` | 5.63 |
-| Data services | BIL / SODS, PDSL, Delta · RIMS | `#0C6A86` | 6.14 |
-| Logistics | ARB facility, Logistics, OTM | `#217265` | 5.74 |
-| Finance | ABACUS, OMEGA, Oracle payments | `#6C5CE0` | 6.19 |
+| Case system | SFDC | `#7C3AED` | 6.72 |
+| People & channels | Customer, Channels, Care Agent, E-support | `#57575C` | 5.63 |
+| Data services | BIL / SODS, PDSL, Delta · RIMS | `#B02071` | 6.14 |
+| Logistics | ARB facility, Logistics, OTM | `#A15C00` | 5.74 |
+| Finance | ABACUS, OMEGA, Oracle payments | `#0B6E4F` | 6.19 |
 
 The five modules are the only **filled** nodes — that is what makes them read as
 the product. Everything else is a white card with a group-coloured border.
@@ -326,3 +326,38 @@ ease-in-out, opacity 1→.4 plus an expanding 4px glow). Bright green, not the
 Killed under `prefers-reduced-motion`.
 
 Heights unchanged: 1072 → 700, 682 → 679, 350 → 676.
+
+### Palette v2 — hue separation over harmony
+
+The first group palette kept every colour inside the blue–teal–violet band so it
+would sit quietly next to the Dell blue. It sat too quietly: SFDC, the data
+services and the modules all read as "some kind of blue", which defeats the point
+of grouping.
+
+Blue is now reserved for Streamliner alone, and the other five groups are spread
+across the wheel instead:
+
+| Group | Hex | Hue | Contrast on white |
+|---|---|---|---|
+| Streamliner modules | `#0672CB` | 207° blue | 4.91 |
+| Case system (SFDC) | `#7C3AED` | 262° violet | 5.70 |
+| People & channels | `#57575C` | neutral (5% sat) | 7.18 |
+| Data services | `#B02071` | 326° magenta | 6.38 |
+| Logistics | `#A15C00` | 34° amber | 5.19 |
+| Finance | `#0B6E4F` | 161° green | 6.25 |
+
+Minimum separation between any two saturated groups is **46°** (blue vs green),
+and those two also differ sharply in warmth. People is deliberately near-neutral
+— humans are not a system, and a grey reads that way without spending a hue.
+
+Amber and green already exist in the Dell kit (`#A15C00`, `#1E8A4C`), so the set
+still belongs to the same family. Finance green is darker than the progress-rail
+tick green and is only ever an outline or a label, never a filled dot, so the two
+do not compete.
+
+### Legend v2
+
+Headings removed — a swatch next to a word and an icon next to a word do not need
+to be told what they are. The box tightened from 228×204 at `x:34 y:36` to
+**236×160 at `x:16 y:20`**, pushed into the corner, rows starting at `y:48` with
+the same 23px pitch. Bottom padding went from 43px to 17px, matching the top.
