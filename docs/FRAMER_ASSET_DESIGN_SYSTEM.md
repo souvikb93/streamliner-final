@@ -698,3 +698,33 @@ function tokLayerOver(v){if(v===tokOver)return;tokOver=v;
 Guarded on a flag so the DOM reorder happens twice per leg, not sixty times a
 second. Leaving underneath reads as *departing*; arriving on top reads as
 *landing*, which is what the drop animation is already saying.
+
+### §14 replaced — stepper on a track, labels beneath
+
+The pill rail is gone. Steps are now markers on a connecting track with their
+labels underneath, which is the conventional stepper and reads faster: the eye
+follows one continuous line instead of scanning ten separate containers.
+
+```css
+.s{display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 7px}
+.s .dot{width:20px;height:20px;border-radius:50%;border:1.5px solid #C9C9CE;background:#fff}
+.sep{flex:1 1 0;min-width:8px;height:2px;margin:9px 0 0}
+```
+
+`margin-top:9px` on the connector is `(20 − 2) / 2` — it puts the track on the
+circle's centre line. Derive it from the marker size rather than nudging until it
+looks right, or it breaks the moment the marker changes.
+
+| State | Marker | Track behind it | Label |
+|---|---|---|---|
+| Upcoming | white, 1.5px `#C9C9CE` ring | `#D9D9DE` | `#696970`, 500 |
+| Working | white, **2.5px green** ring, pulsing green centre | green | **green, 600** |
+| Done | solid green, white check | green | `#454548`, 500 |
+
+Still green throughout — status colour stays independent of the group colours in
+the diagram (§16).
+
+Dropping the pill surfaces freed horizontal space, so the labels sit directly
+under their markers with no container padding, and the connectors take the slack
+via `flex:1 1 0`. The rail gained 12px of height, taken back out of the viewBox
+(`639 → 635`) so the asset still measures exactly 700.

@@ -20,17 +20,17 @@ body{display:block!important}
 .canvas{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 1px 2px rgba(18,18,18,.03)}
 svg.map{display:block;width:100%;height:auto;overflow:visible}
 .lab{font-family:'Uncut Sans';pointer-events:none;user-select:none}
-.steps{margin-top:24px;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:nowrap;align-items:center;min-height:56px}
-.s{flex:none;display:flex;align-items:center;gap:7px;height:42px;padding:0 11px 0 9px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:11.5px;font-weight:500;line-height:1.18;color:var(--ink3);white-space:nowrap;transition:background .3s,color .3s,border-color .3s}
-.s .dot{flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid #C9C9CE;background:#fff;display:grid;place-items:center;transition:all .3s}
-.s.done{color:var(--ink2);background:#E9F5EE;border-color:#C9E4D4}
+.steps{margin-top:24px;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:nowrap;align-items:flex-start;min-height:56px}
+.s{flex:none;display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 7px;font-size:11px;font-weight:500;line-height:1.15;color:var(--ink3);white-space:nowrap;text-align:center;transition:color .3s}
+.s .dot{flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid #C9C9CE;background:#fff;display:grid;place-items:center;transition:all .3s}
+.s.done{color:var(--ink2)}
 .s.done .dot{background:var(--green);border-color:var(--green)}
-.s.done .dot::after{content:"";width:5px;height:3px;border-left:1.7px solid #fff;border-bottom:1.7px solid #fff;transform:translateY(-1px) rotate(-45deg)}
-.s.now{color:var(--ink);background:#fff;border-color:var(--green);font-weight:600;box-shadow:0 0 0 3px rgba(30,138,76,.12)}
-.s.now .dot{border-color:var(--green);background:#fff}
-.s.now .dot::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);animation:pu 1.4s ease-in-out infinite}
+.s.done .dot::after{content:"";width:7px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(-45deg)}
+.s.now{color:var(--green);font-weight:600}
+.s.now .dot{border-color:var(--green);border-width:2.5px;background:#fff}
+.s.now .dot::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);animation:pu 1.4s ease-in-out infinite}
 @keyframes pu{50%{transform:scale(.5);opacity:.6}}
-.sep{flex:1 1 0;min-width:4px;height:2px;background:var(--line2);margin:0 4px;border-radius:2px;transition:background .3s}
+.sep{flex:1 1 0;min-width:8px;height:2px;background:var(--line2);margin:9px 0 0;border-radius:2px;transition:background .3s}
 .sep.done{background:var(--green)}
 @media (max-width:1100px){.s{font-size:11px;padding:0 9px 0 7px;gap:6px}.s .dot{width:13px;height:13px}.sep{margin:0 3px}}
 @media (min-width:900px){body{min-height:700px}}
@@ -43,7 +43,7 @@ svg.map{display:block;width:100%;height:auto;overflow:visible}
   <div class="pick" id="pick" role="tablist" aria-label="Request type"><span class="pill" id="pill"></span></div>
  </div>
  <div class="canvas">
-  <svg class="map" id="svg" viewBox="0 0 1372 639" role="img" aria-label="Streamliner to-be system: a request moves from the customer through channels, Salesforce, the five Streamliner modules and the enterprise systems, and back to the customer"></svg>
+  <svg class="map" id="svg" viewBox="0 0 1372 635" role="img" aria-label="Streamliner to-be system: a request moves from the customer through channels, Salesforce, the five Streamliner modules and the enterprise systems, and back to the customer"></svg>
   <div class="steps" id="steps"></div>
  </div>
 </div>
@@ -81,7 +81,7 @@ const N={
 for(const id in N){const n=N[id];if(!n.r&&!n.h)n.h=38;n.col=CO(id);n.tint=MIX(n.col,.06)}
 const P=(id,s)=>{const n=N[id];if(n.r)return s==='t'?[n.x,n.y-n.r]:s==='b'?[n.x,n.y+n.r]:s==='l'?[n.x-n.r,n.y]:[n.x+n.r,n.y];
  return s==='t'?[n.x,n.y-n.h/2]:s==='b'?[n.x,n.y+n.h/2]:s==='l'?[n.x-n.w/2,n.y]:[n.x+n.w/2,n.y]};
-const RET=[[1358,625],[54,625]];
+const RET=[[1358,621],[54,621]];
 const E={
  'cust-ch':[P('cust','r'),P('ch','l')],'ch-agent':[P('ch','r'),P('agent','l')],
  'agent-sfdc':[P('agent','r'),P('sfdc','l')],'sfdc-ce':[P('sfdc','r'),P('ce','l')],
