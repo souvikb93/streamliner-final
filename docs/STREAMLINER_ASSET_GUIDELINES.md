@@ -394,3 +394,41 @@ Title Case because it is a proper name — Create & Edit, Verify & Review, Proce
 Track, Return Method, Disposition & Recovery. Roles and places are not products and
 take sentence case: Care agent, ARB facility, Oracle payments, E-support.
 Acronyms stay as they are: SFDC, BIL / SODS, PDSL, OTM, ABACUS, OMEGA.
+
+### Layout v5 — readout removed, uniform inset, unused routes hidden
+
+**The Application / Action readout is gone.** It occupied the whole top-right and
+roughly 60px of height for two lines of text that the progress rail already
+implies. The toggle keeps the top bar on its own; the reclaimed height went
+straight into the diagram (viewBox `0 0 1400 600` → `0 0 1372 671`).
+
+**Unused routes are hidden, not dashed.** This was the real source of visual
+noise: every route not used by the active flow was drawn as a faint dashed line,
+and because the routes are orthogonal, those dashes formed ghost rectangles that
+read as containers that were never there.
+
+```js
+EL[k].setAttribute('opacity', u ? 1 : 0)   // was: stroke '#ECECEF' + dasharray '3 6'
+```
+
+Unused *nodes* still show at `.34` opacity, so the full system stays legible —
+only the phantom plumbing goes away.
+
+**Uniform 14-unit inset.** The viewBox was trimmed from 1400 to 1372 so it ends
+where the content ends. Every outer element now sits exactly 14 units from its
+edge: legend at `x:14 y:14`, return risers at `x:14` and `x:1358`, bottom lane at
+`y:657`. Measured content bounds confirm 14 on all four sides. With 24px of card
+padding on top of that, the optical margin is identical all the way round.
+
+**Row pitch** rebuilt for the taller canvas, with every gap checked against the
+1.3× active scale:
+
+| Row | y | nearest neighbour clearance |
+|---|---|---|
+| Logistics chain | 96 | 50 |
+| Finance chain | 196 | 37 |
+| Disposition & Recovery | 288 | 37 |
+| Main Streamliner row | 380 | 60 |
+| Return Method · Delta · RIMS | 490 | 48 |
+| Data services | 588 | 49 |
+| Return lane | 657 | 44 |
