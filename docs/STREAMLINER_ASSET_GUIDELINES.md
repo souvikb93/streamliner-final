@@ -361,3 +361,36 @@ Headings removed — a swatch next to a word and an icon next to a word do not n
 to be told what they are. The box tightened from 228×204 at `x:34 y:36` to
 **236×160 at `x:16 y:20`**, pushed into the corner, rows starting at `y:48` with
 the same 23px pitch. Bottom padding went from 43px to 17px, matching the top.
+
+### Progress rail — label wording and case
+
+A milestone label names **what** reached the state, not just the state. "Approved"
+tells a viewer nothing; "Credit approved" and "Exchange approved" tell them which
+flow they are watching. Every label is exactly two words, so the pill breaks after
+the first word and all ten milestones stay on one line at 1200px:
+
+```js
+`<span class="lb">${o.s[3].replace(' ','<br>')}</span>`
+```
+
+The pill is 40px tall with `line-height:1.18` and a 14px radius — a capsule radius
+on a two-line pill looks like a mistake.
+
+| Credit | Return | Exchange |
+|---|---|---|
+| Issue reported | Return requested | Issue reported |
+| Case created | Case created | Case created |
+| Credit raised | Return approved | Exchange created |
+| Credit approved | Return method | Exchange approved |
+| Credit prepared | Shipping arranged | Shipping arranged |
+| Credit paid | Package collected | Package collected |
+| Agent notified | Item received | Item inspected |
+| Customer credited | Item inspected | Replacement ordered |
+| | Refund issued | Replacement shipped |
+| | Customer refunded | Replacement delivered |
+
+**Case rule.** Sentence case everywhere, with one exception: a product module keeps
+Title Case because it is a proper name — Create & Edit, Verify & Review, Process &
+Track, Return Method, Disposition & Recovery. Roles and places are not products and
+take sentence case: Care agent, ARB facility, Oracle payments, E-support.
+Acronyms stay as they are: SFDC, BIL / SODS, PDSL, OTM, ABACUS, OMEGA.
