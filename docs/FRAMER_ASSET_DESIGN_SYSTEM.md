@@ -728,3 +728,42 @@ Dropping the pill surfaces freed horizontal space, so the labels sit directly
 under their markers with no container padding, and the connectors take the slack
 via `flex:1 1 0`. The rail gained 12px of height, taken back out of the viewBox
 (`639 → 635`) so the asset still measures exactly 700.
+
+### §14 addendum — the track fills, it does not switch
+
+A connector that flips from grey to green on arrival tells you a step finished.
+A connector that fills as the token travels tells you a step is *in progress*,
+which is the thing a stepper exists to show.
+
+The fill is driven from the sequence, not from the milestone that owns it. Each
+connector stores the index of the milestone before it, and the fill is that span's
+completion:
+
+```js
+const pos = phase==='move' ? (i-1)+q : i;          // q = t/dur
+const f = clamp((pos - jp) / (j - jp));            // jp = previous milestone index
+el.style.setProperty('--f',(f*100).toFixed(1)+'%');
+```
+
+This matters because milestones are sparse: between "Case Created" and "Credit
+Raised" the token visits two nodes that have no marker. Keyed to the milestone
+alone, the connector would sit at 0% through both and then rush; keyed to the
+span, it advances the whole way.
+
+Painted through a CSS custom property on a pseudo-element, so the connector keeps
+one DOM node and the width animates without touching layout:
+
+```css
+.sep{position:relative;overflow:hidden;background:var(--line2)}
+.sep::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--f,0%);background:var(--green)}
+```
+
+`paintSeps()` runs every frame, and must sit **after** the phase `if/else` chain
+in `frame()` — dropping it between two `else if` branches is a syntax error that
+kills the whole script.
+
+### The opening beat
+
+The customer no longer plays a work phase at the start. The sequence opens with
+the token already leaving: `phase='done'` with a 0.45s hold, so the first thing
+that moves is the request itself rather than the actor sending it.

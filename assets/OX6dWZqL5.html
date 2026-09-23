@@ -30,8 +30,8 @@ svg.map{display:block;width:100%;height:auto;overflow:visible}
 .s.now .dot{border-color:var(--green);border-width:2.5px;background:#fff}
 .s.now .dot::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);animation:pu 1.4s ease-in-out infinite}
 @keyframes pu{50%{transform:scale(.5);opacity:.6}}
-.sep{flex:1 1 0;min-width:8px;height:2px;background:var(--line2);margin:9px 0 0;border-radius:2px;transition:background .3s}
-.sep.done{background:var(--green)}
+.sep{position:relative;overflow:hidden;flex:1 1 0;min-width:8px;height:2px;background:var(--line2);margin:9px 0 0;border-radius:2px}
+.sep::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--f,0%);background:var(--green);border-radius:2px}
 @media (max-width:1100px){.s{font-size:11px;padding:0 9px 0 7px;gap:6px}.s .dot{width:13px;height:13px}.sep{margin:0 3px}}
 @media (min-width:900px){body{min-height:700px}}
 @media (max-width:760px){.top{flex-direction:column;align-items:stretch;gap:16px}.pick{align-self:stretch;overflow-x:auto;justify-content:flex-start}.canvas{overflow-x:auto;-webkit-overflow-scrolling:touch}.canvas>.map{width:900px;min-width:900px}.steps{min-width:1000px;min-height:52px}}
@@ -189,11 +189,17 @@ function tokLayerOver(v){if(v===tokOver)return;tokOver=v;v?svg.appendChild(tokLa
 function movePill(){const b=document.querySelector('.opt.on');if(!b)return;
  const p=$('pill');p.style.width=b.offsetWidth+'px';p.style.height=b.offsetHeight+'px';p.style.transform=`translateX(${b.offsetLeft-4}px) translateY(${b.offsetTop-4}px)`}
 function milestones(){return seq.map((s,j)=>({s,j})).filter(o=>o.s[3])}
-function renderSteps(){$('steps').innerHTML=milestones().map((o,k)=>`${k?'<span class="sep" data-j="'+o.j+'"></span>':''}<span class="s" data-j="${o.j}"><span class="dot"></span><span class="lb">${o.s[3].replace(' ','<br>')}</span></span>`).join('')}
+function renderSteps(){const ms=milestones();
+ $('steps').innerHTML=ms.map((o,k)=>`${k?'<span class="sep" data-j="'+o.j+'" data-p="'+ms[k-1].j+'"></span>':''}<span class="s" data-j="${o.j}"><span class="dot"></span><span class="lb">${o.s[3].replace(' ','<br>')}</span></span>`).join('')}
+function paintSeps(){const q=Math.min(1,dur?t/dur:1);
+ const pos=phase==='move'?(i-1)+q:i;
+ $('steps').querySelectorAll('.sep').forEach(el=>{const j=+el.dataset.j,jp=+el.dataset.p;
+  const f=Math.max(0,Math.min(1,(pos-jp)/(j-jp)));
+  el.style.setProperty('--f',(f*100).toFixed(1)+'%')})}
 function markSteps(){const fin=j=>j<i||(j===i&&(phase==='done'||phase==='end'));
  $('steps').querySelectorAll('.s').forEach(el=>{const j=+el.dataset.j,d=fin(j),now=!d&&j===i&&(phase==='work'||phase==='move'||phase==='land');
   el.classList.toggle('done',d);el.classList.toggle('now',now);});
- $('steps').querySelectorAll('.sep').forEach(el=>el.classList.toggle('done',fin(+el.dataset.j)))}
+ paintSeps()}
 function focusRoute(){const ue=new Set(),un=new Set(seq.map(s=>s[0]));
  for(let j=1;j<seq.length;j++)ue.add(edgeOf(seq[j-1][0],seq[j][0])[0]);
  for(const k in EL){const u=ue.has(k);EL[k].setAttribute('stroke',u?'#C6C8CD':'#D9D9DE');EL[k].setAttribute('opacity',u?1:.34)}
@@ -205,7 +211,7 @@ function start(k){cur=k;seq=F[k];i=0;trail.innerHTML='';flow.innerHTML='';
  movePill();
  for(const id in N)nodeState(id,'idle');focusRoute();renderSteps();
  tokIcon.innerHTML=ICON[seq[0][4]];placeTok([N.cust.x,N.cust.y]);showTok(false);
- phase='work';t=0;dur=WORK;nodeState('cust','work',0);markSteps()}
+ phase='done';t=0;dur=reduce?.01:.45;nodeState('cust','idle');markSteps()}
 const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
 function next(){if(i>=seq.length-1){phase='end';t=0;dur=END;markSteps();return}
  const [ek,rev]=edgeOf(seq[i][0],seq[i+1][0]),a=N[seq[i][0]],b=N[seq[i+1][0]];
@@ -246,7 +252,8 @@ function frame(now){const dt=Math.min(.05,(now-(lastNow||now))/1000);lastNow=now
     if(path){path.setAttribute('stroke',GREEN);path.setAttribute('stroke-opacity',.55);path.setAttribute('stroke-width',2)}
     flow.innerHTML='';markSteps()}}
   else if(phase==='done'){if(p>=1)next()}
-  else if(phase==='end'){if(p>=1)start(ORDER[(ORDER.indexOf(cur)+1)%3])}}
+  else if(phase==='end'){if(p>=1)start(ORDER[(ORDER.indexOf(cur)+1)%3])}
+  paintSeps()}
  requestAnimationFrame(frame)}
 $('pick').onclick=e=>{const b=e.target.closest('.opt');if(b)start(b.dataset.k)};
 addEventListener('resize',()=>{movePill()});
