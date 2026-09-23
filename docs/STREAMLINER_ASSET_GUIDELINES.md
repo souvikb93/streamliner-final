@@ -454,3 +454,29 @@ The 24px was taken out of the diagram, not added to the frame: the viewBox went
 | Return Method · Delta · RIMS | 468 | 56 |
 | Data services | 560 | 42 |
 | Return lane | 625 | 40 |
+
+### Layout v6 — actor nodes and the closing loop
+
+**Pulse rings removed.** The active node already announces itself three ways: it
+scales to 1.3×, it swaps to the lift shadow, and its loader arc sweeps. A fourth
+signal expanding outward was noise, and on a dense diagram it read as a collision
+with whatever sat next to it.
+
+**The customer is a self-contained node.** Radius 27 → 36 with the label moved
+inside the circle at 10px, icon lifted to `y-23`. The idle left edge lands at
+`x:14`, matching the legend and the frame inset exactly, and freeing the space
+under the circle that the external label used to occupy.
+
+**The loop closes underneath.** The return now runs along the bottom lane and
+rises into the customer's *bottom* port rather than coming up the left edge into
+the side: `RET = [[1358,625],[50,625]]` → `P('cust','b')`. A request that comes
+back from below reads as a cycle closing; one that arrives from the left reads as
+another input. The left riser is gone entirely.
+
+**Care agent carries a headset mark.** The only node that is a person doing a job
+rather than a system or a place, so it earns an icon. The glyph sits at
+`x-39`, the label shifts `+10`, and the pair stays optically centred — driven by
+an `n.mark` flag so any node can opt in without special-casing the renderer.
+
+**E-support** lifted 12 units to `y:270`, opening the gap between it and the main
+row.
