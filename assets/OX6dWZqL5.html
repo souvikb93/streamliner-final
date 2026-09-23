@@ -127,30 +127,29 @@ const G={},GI={};
 const txt=(x,y,s,size,g,w,fill,anchor)=>{const t=mk('text',{x,y,'text-anchor':anchor||'middle',class:'lab','font-size':size,'font-weight':w,fill,'letter-spacing':'-0.01em'},g);t.textContent=s;return t};
 for(const id in N){const n=N[id],g=mk('g',{},nodeLayer),inner=mk('g',{},g);G[id]=g;GI[id]=inner;
  n.sc=1;n.vel=0;n.target=1;
- const isMod=n.k==='m',col=CO(id);
+ const col=CO(id);
  if(n.r){n.shape=mk('circle',{cx:n.x,cy:n.y,r:n.r,fill:'#fff',stroke:col,'stroke-opacity':.45,'stroke-width':1.5,filter:'url(#soft)',style:'transition:stroke .4s,stroke-width .4s,stroke-opacity .4s'},inner);
   const ic=mk('g',{transform:`translate(${n.x-11},${n.y-25}) scale(.92)`,fill:'none',stroke:col,'stroke-width':1.9,'stroke-linecap':'round','stroke-linejoin':'round',style:'transition:stroke .4s'},inner);n.ic=ic;
   ic.innerHTML=ACT[n.ico||'user'];
   n.txt=[txt(n.x,n.y+18,n.t,11,inner,600,col)];
  }else{
   n.shape=mk('rect',{x:n.x-n.w/2,y:n.y-n.h/2,width:n.w,height:n.h,rx:n.ch?17:11,
-   fill:isMod?col:'#fff',stroke:col,'stroke-opacity':isMod?1:.45,'stroke-width':1.5,filter:'url(#soft)',
+   fill:'#fff',stroke:col,'stroke-opacity':.45,'stroke-width':1.5,filter:'url(#soft)',
    style:'transition:fill .4s,stroke .4s,stroke-width .4s,stroke-opacity .4s'},inner);
   if(n.ch){['M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2','M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-4-1L3 20l1.3-4.6A8.4 8.4 0 1 1 21 11.5z','M3 6h18v12H3zM3 7l9 6 9-6'].forEach((d,i)=>{
    const gg=mk('g',{transform:`translate(${n.x-6.5},${n.y-32+i*24}) scale(.55)`,fill:'none',stroke:col,'stroke-width':2.4,'stroke-linejoin':'round',style:'transition:stroke .4s'},inner);mk('path',{d},gg);if(!n.icg)n.icg=[];n.icg.push(gg)})}
   else{const lines=n.t2?[n.t,n.t2]:[n.t];
-   n.txt=lines.map((l,i)=>txt(n.x,n.y+4+(i-(lines.length-1)/2)*15,l,12,inner,600,isMod?'#fff':col))}}
+   n.txt=lines.map((l,i)=>txt(n.x,n.y+4+(i-(lines.length-1)/2)*15,l,12,inner,600,col))}}
  const w=n.r?n.r*2:n.w,h=n.r?n.r*2:n.h;
  const r0=n.r?n.r:Math.min(n.ch?17:11,h/2),x0=n.x-w/2,x1=n.x+w/2,y0=n.y-h/2,y1=n.y+h/2;
  const half=tp=>n.r?`M${x0},${n.y} A${n.r},${n.r} 0 0 ${tp?1:0} ${x1},${n.y}`
   :`M${x0},${n.y} L${x0},${tp?y0+r0:y1-r0} A${r0},${r0} 0 0 ${tp?1:0} ${x0+r0},${tp?y0:y1} L${x1-r0},${tp?y0:y1} A${r0},${r0} 0 0 ${tp?1:0} ${x1},${tp?y0+r0:y1-r0} L${x1},${n.y}`;
- n.load=[1,0].map(tp=>mk('path',{d:half(tp),fill:'none',stroke:isMod?'#fff':col,'stroke-width':2.4,'stroke-linecap':'round',pathLength:100,'stroke-dasharray':'0 100',opacity:0},inner));
+ n.load=[1,0].map(tp=>mk('path',{d:half(tp),fill:'none',stroke:col,'stroke-width':2.4,'stroke-linecap':'round',pathLength:100,'stroke-dasharray':'0 100',opacity:0},inner));
 }
-function nodeState(id,s,p){const n=N[id],sh=n.shape,isMod=n.k==='m',col=CO(id);
+function nodeState(id,s,p){const n=N[id],sh=n.shape,col=CO(id);
  sh.setAttribute('stroke',col);sh.setAttribute('stroke-width',s==='work'?2:1.5);
- if(isMod){sh.setAttribute('fill',s==='done'?n.tint:col);sh.setAttribute('fill-opacity',1);sh.setAttribute('stroke-opacity',s==='done'?.45:1);
-   if(n.txt)n.txt.forEach(t=>t.setAttribute('fill',s==='done'?col:'#fff'))}
- else{sh.setAttribute('fill','#fff');sh.setAttribute('stroke-opacity',s==='work'?1:s==='done'?.3:.45)}
+ sh.setAttribute('fill',s==='done'?n.tint:'#fff');sh.setAttribute('fill-opacity',1);
+ sh.setAttribute('stroke-opacity',s==='work'?1:.45);
  sh.setAttribute('filter',s==='work'?'url(#lift)':'url(#soft)');
  n.load.forEach(l=>{l.setAttribute('opacity',s==='work'?1:0);l.setAttribute('stroke-dasharray',`${s==='work'?(p||0)*100:0} 100`)});
  n.target=s==='work'?1.3:1;

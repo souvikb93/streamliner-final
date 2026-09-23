@@ -621,3 +621,48 @@ rather than shrinking the type.
 
 Actor icons live in one `ACT` map keyed by `n.ico`, so adding an actor is one entry
 plus one node property — the renderer does not grow a special case per person.
+
+---
+
+## 16. One node component, three states (supersedes the fill/outline split in §11)
+
+Every node on the diagram is now the same component. There is no filled variant
+and no outlined variant, no `isMod` branch in the renderer, and no rule about
+which node kinds get white labels.
+
+| State | Fill | Stroke | Label / icon |
+|---|---|---|---|
+| Idle | white | group colour, 1.5px, `.45` | group colour |
+| Working | white | group colour, **2px, `1.0`** + lift shadow + 1.3× + loader arc | group colour |
+| Done | **6% tint of its own colour** | group colour, 1.5px, `.45` | group colour |
+
+```js
+function nodeState(id,s,p){const n=N[id],sh=n.shape,col=CO(id);
+ sh.setAttribute('stroke',col);
+ sh.setAttribute('stroke-width', s==='work'?2:1.5);
+ sh.setAttribute('fill', s==='done' ? n.tint : '#fff');
+ sh.setAttribute('fill-opacity',1);
+ sh.setAttribute('stroke-opacity', s==='work'?1:.45);
+ …}
+```
+
+The tint is the *only* fill on the canvas, so "has been through" is readable at a
+glance across the whole diagram rather than being a property of one node family.
+
+**What this gave up, deliberately.** The five Streamliner modules used to be solid
+colour so the product read as the subject and the enterprise systems as context.
+That emphasis is gone: ABACUS and Create & Edit now carry equal visual weight.
+Hierarchy rests entirely on hue — blue is reserved for Streamliner and nothing
+else. Chosen knowingly in favour of a single, uniform component.
+
+**The working state is now quieter**, because fill no longer distinguishes it. It
+reads through four other signals at once — 1.3× scale, lift shadow, 2px stroke at
+full opacity, and the loader arc sweeping the perimeter. Four weak signals
+together beat one strong one that breaks the system.
+
+The travelling token stays solid group colour. It is the only filled shape in
+motion, so the eye tracks it without competition.
+
+**This rule stops at the diagram.** The progress rail keeps its own green state
+language (§14) — status colour and subject colour are different variables and must
+not be merged.
