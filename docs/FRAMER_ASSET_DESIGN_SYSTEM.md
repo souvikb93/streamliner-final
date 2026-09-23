@@ -503,3 +503,43 @@ groups and edit the field by position, never by value.
 in the base `.s` rule while a `@media (max-width:1100px)` block was the one in
 force at 1072px, so two rounds of edits changed nothing. Measured width stayed
 identical to the byte — that identical number is the tell.
+
+### Correction to §14 — the rail has one colour language
+
+The working state was painted in the *running node's* group colour, so it changed
+hue step to step: blue, then magenta, then amber. Done was always green. A viewer
+reading that sees two unrelated systems, and the working state looks like a
+category rather than a status.
+
+Status colour is now independent of subject colour. The rail is green throughout:
+
+| State | Surface | Border | Dot |
+|---|---|---|---|
+| Upcoming | `#fff` | `#E9E9EC` | hollow, grey ring |
+| Working | `#fff` | `var(--green)` + `0 0 0 3px rgba(30,138,76,.12)` | green ring, pulsing green centre |
+| Done | `#E9F5EE` | `#C9E4D4` | solid green, white check |
+
+Group colour still identifies *what* a node is, everywhere in the diagram. It must
+never also encode *where the process is* — one variable, one meaning.
+
+The rail also fills the card: `.sep` is `flex:1 1 0` with no `max-width`, so the
+separators absorb all slack and the first and last pill land on the frame edges.
+
+### Correction to §13 — a faded fill is not a done state
+
+The `done` state for filled nodes was `fill-opacity:.42` with the label left white.
+White on 42% blue over white measures **1.85:1**. It looked washed out because it
+*was* illegible — well under the 4.5:1 floor, on the five nodes that matter most.
+
+A filled node's done state is a light tint of its own colour with the label
+switched to that colour, never white text on a weakened fill:
+
+```js
+sh.setAttribute('fill-opacity', s==='done' ? .06 : 1);
+if(n.txt) n.txt.forEach(t=>t.setAttribute('fill', s==='done' ? col : '#fff'));
+```
+
+`.06` is not arbitrary: it is the highest tint at which **every** group colour still
+clears 4.5:1 against its own tinted background. At `.08` the worst group falls to
+4.41, at `.10` to 4.29. Pick the alpha from the worst case in the palette, not from
+the one you happen to be looking at.

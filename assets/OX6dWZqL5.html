@@ -26,13 +26,13 @@ svg.map{display:block;width:100%;height:auto;overflow:visible}
 .s.done{color:var(--ink2);background:#E9F5EE;border-color:#C9E4D4}
 .s.done .dot{background:var(--green);border-color:var(--green)}
 .s.done .dot::after{content:"";width:5px;height:3px;border-left:1.7px solid #fff;border-bottom:1.7px solid #fff;transform:translateY(-1px) rotate(-45deg)}
-.s.now{color:#fff;border-color:transparent;font-weight:600}
-.s.now .dot{border-color:rgba(255,255,255,.7);background:transparent}
-.s.now .dot::after{content:"";width:6px;height:6px;border-radius:50%;background:#fff;animation:pu 1.4s ease-in-out infinite}
+.s.now{color:var(--ink);background:#fff;border-color:var(--green);font-weight:600;box-shadow:0 0 0 3px rgba(30,138,76,.12)}
+.s.now .dot{border-color:var(--green);background:#fff}
+.s.now .dot::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);animation:pu 1.4s ease-in-out infinite}
 @keyframes pu{50%{transform:scale(.5);opacity:.6}}
-.sep{flex:1 1 0;min-width:4px;max-width:14px;height:2px;background:var(--line2);margin:0 4px;border-radius:2px;transition:background .3s}
+.sep{flex:1 1 0;min-width:4px;height:2px;background:var(--line2);margin:0 4px;border-radius:2px;transition:background .3s}
 .sep.done{background:var(--green)}
-@media (max-width:1100px){.s{font-size:11px;padding:0 9px 0 7px;gap:6px}.s .dot{width:13px;height:13px}.sep{margin:0 3px;max-width:12px}}
+@media (max-width:1100px){.s{font-size:11px;padding:0 9px 0 7px;gap:6px}.s .dot{width:13px;height:13px}.sep{margin:0 3px}}
 @media (min-width:900px){body{min-height:700px}}
 @media (max-width:760px){.top{flex-direction:column;align-items:stretch;gap:16px}.pick{align-self:stretch;overflow-x:auto;justify-content:flex-start}.canvas{overflow-x:auto;-webkit-overflow-scrolling:touch}.canvas>.map{width:900px;min-width:900px}.steps{min-width:1000px;min-height:52px}}
 @media (max-width:440px){.opt{height:40px}.canvas{padding:16px}}
@@ -148,7 +148,8 @@ for(const id in N){const n=N[id],g=mk('g',{},nodeLayer),inner=mk('g',{},g);G[id]
 }
 function nodeState(id,s,p){const n=N[id],sh=n.shape,isMod=n.k==='m',col=CO(id);
  sh.setAttribute('stroke',col);sh.setAttribute('stroke-width',s==='work'?2:1.5);
- if(isMod){sh.setAttribute('fill',col);sh.setAttribute('fill-opacity',s==='done'?.42:1);sh.setAttribute('stroke-opacity',s==='done'?.42:1)}
+ if(isMod){sh.setAttribute('fill',col);sh.setAttribute('fill-opacity',s==='done'?.06:1);sh.setAttribute('stroke-opacity',s==='done'?.45:1);
+   if(n.txt)n.txt.forEach(t=>t.setAttribute('fill',s==='done'?col:'#fff'))}
  else{sh.setAttribute('fill','#fff');sh.setAttribute('stroke-opacity',s==='work'?1:s==='done'?.3:.45)}
  sh.setAttribute('filter',s==='work'?'url(#lift)':'url(#soft)');
  n.load.forEach(l=>{l.setAttribute('opacity',s==='work'?1:0);l.setAttribute('stroke-dasharray',`${s==='work'?(p||0)*100:0} 100`)});
@@ -187,9 +188,8 @@ function movePill(){const b=document.querySelector('.opt.on');if(!b)return;
 function milestones(){return seq.map((s,j)=>({s,j})).filter(o=>o.s[3])}
 function renderSteps(){$('steps').innerHTML=milestones().map((o,k)=>`${k?'<span class="sep" data-j="'+o.j+'"></span>':''}<span class="s" data-j="${o.j}"><span class="dot"></span><span class="lb">${o.s[3].replace(' ','<br>')}</span></span>`).join('')}
 function markSteps(){const fin=j=>j<i||(j===i&&(phase==='done'||phase==='end'));
- const col=CO(seq[i][0]);
  $('steps').querySelectorAll('.s').forEach(el=>{const j=+el.dataset.j,d=fin(j),now=!d&&j===i&&(phase==='work'||phase==='move'||phase==='land');
-  el.classList.toggle('done',d);el.classList.toggle('now',now);el.style.background=now?col:''});
+  el.classList.toggle('done',d);el.classList.toggle('now',now);});
  $('steps').querySelectorAll('.sep').forEach(el=>el.classList.toggle('done',fin(+el.dataset.j)))}
 function focusRoute(){const ue=new Set(),un=new Set(seq.map(s=>s[0]));
  for(let j=1;j<seq.length;j++)ue.add(edgeOf(seq[j-1][0],seq[j][0])[0]);
