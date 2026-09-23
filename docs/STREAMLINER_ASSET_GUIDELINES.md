@@ -541,3 +541,46 @@ Risers followed their rows: `log-otm` and `log-cust` to `y:72`, `pay-cust` to
 
 Clearances re-checked at 1.3×: ABACUS to Disposition 19 units, Disposition to
 Create & Edit 86, ARB to ABACUS 39. Frame margins unchanged at 14 on all sides.
+
+### Layout v9 — Disposition on the ABACUS line
+
+Disposition & Recovery moves to `y:166`, sharing the horizontal with ABACUS,
+OMEGA and Oracle payments. It stays at `x:702`, so it is still directly above
+Create & Edit and the `ce-dr` feed is still a straight vertical.
+
+That move broke its route to Process & Track — the old lane ran along `y:234`,
+and at `y:166` a straight horizontal would pass **through** ABACUS. Rerouted down
+and across:
+
+```js
+'dr-pt':[P('dr','r'),[802,166],[802,250],[1104,250],P('pt','t')]
+```
+
+`x:802` is the only clear riser between them: Disposition's scaled right edge is
+782.6, ABACUS's scaled left is 822.4, so it clears both by ~19 units whichever one
+is active. The `y:250` lane sits below ABACUS (185) and above the main row (343).
+
+`ce-pt` lifted `330 → 322` for more air under the main row.
+
+### Actor icons scale with their labels
+
+Icons in the actor circles went `scale(.92)` → `scale(1.1)` — about 22px to 26px
+against an 11px label. An icon that is only twice its caption reads as an
+afterthought; roughly 2.4× is where the glyph becomes the primary content of the
+circle and the label becomes its caption.
+
+### Stroke thickens as the node fills
+
+The stroke used to jump to 2px when work started and drop back to 1.5px when it
+finished, so the node ended lighter than it was mid-work — backwards, since a
+finished node has more to say than an idle one.
+
+| State | Stroke | Opacity |
+|---|---|---|
+| Idle | 1.4 | `.45` |
+| Working | `1.4 + .8·p` | `1` |
+| Done | 2.2 | `1` |
+
+Weight and fill now advance together and both hold at the end. `stroke-width` was
+also removed from the CSS transition list — with a per-frame value, a 400ms ease
+makes the stroke lag its own fill.
