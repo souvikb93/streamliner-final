@@ -432,3 +432,25 @@ padding on top of that, the optical margin is identical all the way round.
 | Return Method · Delta · RIMS | 490 | 48 |
 | Data services | 588 | 49 |
 | Return lane | 657 | 44 |
+
+### Divider rhythm
+
+24px of clear space above and below the rule that separates the diagram from the
+progress rail — `margin-top:24px` for the space above, `padding-top:24px` for the
+space below, with the `border-top` sitting between them. That matches the 24px
+card padding, so the diagram sits in an even 24px box on all four sides plus the
+divider.
+
+The 24px was taken out of the diagram, not added to the frame: the viewBox went
+`671 → 639` and every row moved up with it, so the asset still measures exactly
+700px at 1200. Row pitch after the compression:
+
+| Row | y | clearance to the row above at 1.3× |
+|---|---|---|
+| Logistics chain | 92 | — |
+| Finance chain | 186 | 44 |
+| Disposition & Recovery | 274 | 33 |
+| Main Streamliner row | 362 | 33 |
+| Return Method · Delta · RIMS | 468 | 56 |
+| Data services | 560 | 42 |
+| Return lane | 625 | 40 |

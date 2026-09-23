@@ -20,7 +20,7 @@ body{display:block!important}
 .canvas{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 1px 2px rgba(18,18,18,.03)}
 svg.map{display:block;width:100%;height:auto;overflow:visible}
 .lab{font-family:'Uncut Sans';pointer-events:none;user-select:none}
-.steps{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:nowrap;align-items:center;min-height:56px}
+.steps{margin-top:24px;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:nowrap;align-items:center;min-height:56px}
 .s{flex:none;display:flex;align-items:center;gap:7px;height:40px;padding:0 11px 0 7px;border-radius:14px;font-size:11.5px;font-weight:500;line-height:1.18;color:var(--ink3);white-space:nowrap;transition:background .35s,color .35s}
 .s .dot{width:13px;height:13px;border-radius:50%;border:1.5px solid #D9D9DE;background:#fff;display:grid;place-items:center;transition:all .35s}
 .s.done{color:var(--ink2);background:#E9F5EE}
@@ -43,7 +43,7 @@ svg.map{display:block;width:100%;height:auto;overflow:visible}
   <div class="pick" id="pick" role="tablist" aria-label="Request type"><span class="pill" id="pill"></span></div>
  </div>
  <div class="canvas">
-  <svg class="map" id="svg" viewBox="0 0 1372 671" role="img" aria-label="Streamliner to-be system: a request moves from the customer through channels, Salesforce, the five Streamliner modules and the enterprise systems, and back to the customer"></svg>
+  <svg class="map" id="svg" viewBox="0 0 1372 639" role="img" aria-label="Streamliner to-be system: a request moves from the customer through channels, Salesforce, the five Streamliner modules and the enterprise systems, and back to the customer"></svg>
   <div class="steps" id="steps"></div>
  </div>
 </div>
@@ -55,54 +55,54 @@ const DEEP='#06356E',GREEN='#1E8A4C';
  const GRP={ce:'mod',vr:'mod',rm:'mod',pt:'mod',dr:'mod',sfdc:'crm',cust:'ppl',ch:'ppl',agent:'ppl',es:'ppl',bil:'data',pdsl:'data',delta:'data',arb:'log',log:'log',otm:'log',ab:'fin',om:'fin',pay:'fin'};
  const CO=id=>PAL[GRP[id]]||DEEP;
 const NEU='#D9D9DE',NEUT='#454548';
-const M=380,W=124;
+const M=362,W=124;
 const N={
  cust:{x:50,y:M,r:27,t:'Customer',k:'p'},
  ch:{x:142,y:M,w:34,h:88,k:'p',ch:1},
- es:{x:265,y:296,w:W,t:'E-support',k:'p'},
+ es:{x:265,y:282,w:W,t:'E-support',k:'p'},
  agent:{x:265,y:M,w:W,t:'Care agent',k:'p'},
  sfdc:{x:475,y:M,w:W,t:'SFDC',k:'s'},
  ce:{x:685,y:M,w:W,t:'Create & Edit',k:'m'},
- dr:{x:790,y:288,w:W,h:46,t:'Disposition',t2:'& Recovery',k:'m'},
+ dr:{x:790,y:274,w:W,h:46,t:'Disposition',t2:'& Recovery',k:'m'},
  vr:{x:895,y:M,w:W,t:'Verify & Review',k:'m'},
  pt:{x:1105,y:M,w:W,t:'Process & Track',k:'m'},
- rm:{x:895,y:490,w:W,t:'Return Method',k:'m'},
- bil:{x:685,y:588,w:W,t:'BIL / SODS',k:'s'},
- pdsl:{x:1105,y:588,w:100,t:'PDSL',k:'s'},
- delta:{x:1268,y:490,w:W,t:'Delta · RIMS',k:'s'},
- otm:{x:1268,y:588,w:100,t:'OTM',k:'s'},
- ab:{x:895,y:196,w:W,t:'ABACUS',k:'s'},
- om:{x:1105,y:196,w:W,t:'OMEGA',k:'s'},
- pay:{x:1268,y:196,w:W,t:'Oracle payments',k:'s'},
- arb:{x:1105,y:96,w:W,t:'ARB facility',k:'s'},
- log:{x:1268,y:96,w:W,t:'Logistics',k:'p'}};
+ rm:{x:895,y:468,w:W,t:'Return Method',k:'m'},
+ bil:{x:685,y:560,w:W,t:'BIL / SODS',k:'s'},
+ pdsl:{x:1105,y:560,w:100,t:'PDSL',k:'s'},
+ delta:{x:1268,y:468,w:W,t:'Delta · RIMS',k:'s'},
+ otm:{x:1268,y:560,w:100,t:'OTM',k:'s'},
+ ab:{x:895,y:186,w:W,t:'ABACUS',k:'s'},
+ om:{x:1105,y:186,w:W,t:'OMEGA',k:'s'},
+ pay:{x:1268,y:186,w:W,t:'Oracle payments',k:'s'},
+ arb:{x:1105,y:92,w:W,t:'ARB facility',k:'s'},
+ log:{x:1268,y:92,w:W,t:'Logistics',k:'p'}};
 for(const id in N){const n=N[id];if(!n.r&&!n.h)n.h=38;n.col=CO(id)}
 const P=(id,s)=>{const n=N[id];if(n.r)return s==='t'?[n.x,n.y-n.r]:s==='b'?[n.x,n.y+n.r]:s==='l'?[n.x-n.r,n.y]:[n.x+n.r,n.y];
  return s==='t'?[n.x,n.y-n.h/2]:s==='b'?[n.x,n.y+n.h/2]:s==='l'?[n.x-n.w/2,n.y]:[n.x+n.w/2,n.y]};
-const RET=[[1358,657],[14,657],[14,M]];
+const RET=[[1358,625],[14,625],[14,M]];
 const E={
  'cust-ch':[P('cust','r'),P('ch','l')],'ch-agent':[P('ch','r'),P('agent','l')],
  'agent-sfdc':[P('agent','r'),P('sfdc','l')],'sfdc-ce':[P('sfdc','r'),P('ce','l')],
  'ce-vr':[P('ce','r'),P('vr','l')],'vr-pt':[P('vr','r'),P('pt','l')],
- 'cust-es':[P('cust','r'),[100,M],[100,296],P('es','l')],
- 'es-ce':[P('es','r'),[685,296],P('ce','t')],
- 'ce-dr':[P('ce','t'),[685,288],P('dr','l')],
+ 'cust-es':[P('cust','r'),[100,M],[100,282],P('es','l')],
+ 'es-ce':[P('es','r'),[685,282],P('ce','t')],
+ 'ce-dr':[P('ce','t'),[685,274],P('dr','l')],
  'ce-bil':[P('ce','b'),P('bil','t')],
- 'ce-pt':[P('ce','t'),[685,340],[1105,340],P('pt','t')],
- 'dr-pt':[P('dr','r'),[1105,288],P('pt','t')],
- 'pt-ab':[P('pt','t'),[1105,246],[895,246],P('ab','b')],
- 'dr-arb':[P('dr','t'),[790,96],P('arb','l')],
+ 'ce-pt':[P('ce','t'),[685,322],[1105,322],P('pt','t')],
+ 'dr-pt':[P('dr','r'),[1105,274],P('pt','t')],
+ 'pt-ab':[P('pt','t'),[1105,232],[895,232],P('ab','b')],
+ 'dr-arb':[P('dr','t'),[790,92],P('arb','l')],
  'arb-log':[P('arb','r'),P('log','l')],
  'ab-om':[P('ab','r'),P('om','l')],'om-pay':[P('om','r'),P('pay','l')],
- 'pay-cust':[P('pay','r'),[1358,196],...RET,P('cust','l')],
- 'log-cust':[P('log','r'),[1358,96],...RET,P('cust','l')],
- 'log-otm':[P('log','r'),[1344,96],[1344,588],P('otm','r')],
+ 'pay-cust':[P('pay','r'),[1358,186],...RET,P('cust','l')],
+ 'log-cust':[P('log','r'),[1358,92],...RET,P('cust','l')],
+ 'log-otm':[P('log','r'),[1344,92],[1344,560],P('otm','r')],
  'vr-rm':[P('vr','b'),P('rm','t')],
- 'pt-rm':[P('pt','b'),[1105,444],[895,444],P('rm','t')],
- 'pt-delta':[P('pt','r'),[1192,M],[1192,490],P('delta','l')],
- 'rm-bil':[P('rm','l'),[790,490],[790,588],P('bil','r')],
- 'rm-pdsl':[P('rm','r'),[1010,490],[1010,588],P('pdsl','l')],
- 'rm-otm':[P('rm','r'),[1180,490],[1180,588],P('otm','l')]};
+ 'pt-rm':[P('pt','b'),[1105,424],[895,424],P('rm','t')],
+ 'pt-delta':[P('pt','r'),[1192,M],[1192,468],P('delta','l')],
+ 'rm-bil':[P('rm','l'),[790,468],[790,560],P('bil','r')],
+ 'rm-pdsl':[P('rm','r'),[1010,468],[1010,560],P('pdsl','l')],
+ 'rm-otm':[P('rm','r'),[1180,468],[1180,560],P('otm','l')]};
 const HOPS={};
 function rpath(p,hop,r=18){let d=`M${p[0][0]},${p[0][1]}`,prev=p[0];
  const seg=(a,b)=>{if(hop){const hz=a[1]===b[1]&&hop[1]===a[1]&&(hop[0]-a[0])*(hop[0]-b[0])<0;
