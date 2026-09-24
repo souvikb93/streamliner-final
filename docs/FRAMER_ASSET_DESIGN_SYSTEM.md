@@ -685,19 +685,15 @@ The tint lives on a second shape clipped by a growing rect, not on the node's ow
 `fill`, so the outline and label never change while it fills. The clip path is in
 the node's own user space, so it scales with the 1.3× transform for free.
 
-**The token passes under the node it leaves and over the node it lands on.**
-Previously the token layer sat above the nodes permanently, so a departing token
-slid across the face of the pill it had just finished with.
+**The token always travels under the nodes**, arriving and departing alike. The
+layer order is fixed once at build time — `trail, flow, tokLayer, nodeLayer` — with
+no runtime reordering.
 
-```js
-function tokLayerOver(v){if(v===tokOver)return;tokOver=v;
- v?svg.appendChild(tokLayer):svg.insertBefore(tokLayer,nodeLayer)}
-// move starts → under;  p>.4 → over
-```
-
-Guarded on a flag so the DOM reorder happens twice per leg, not sixty times a
-second. Leaving underneath reads as *departing*; arriving on top reads as
-*landing*, which is what the drop animation is already saying.
+An earlier version raised the token above the node layer past the halfway point so
+it would land *on* the pill. Symmetric is better: the token belongs to the
+connective layer, and a payload that ducks behind the thing it is arriving at
+reads as entering it. Landing is already carried by the drop scale and the fill
+that follows.
 
 ### §14 replaced — stepper on a track, labels beneath
 

@@ -116,13 +116,13 @@ function rpath(p,hop,r=18){let d=`M${p[0][0]},${p[0][1]}`,prev=p[0];
   seg(a,s);d+=` Q${b[0]},${b[1]} ${e[0]},${e[1]}`;prev=e}
  seg(prev,p[p.length-1]);return d}
 const defs=mk('defs',{});
-defs.innerHTML='<filter id="lift" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="6" stdDeviation="9" flood-color="#121212" flood-opacity="0.16"/></filter>'
+defs.innerHTML='<filter id="lift" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#121212" flood-opacity="0.10"/></filter>'
  +'<linearGradient id="flowg" gradientUnits="userSpaceOnUse"><stop id="gs0" offset="0"/><stop id="gs1" offset="1"/></linearGradient>'
  +'<filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#121212" flood-opacity="0.07"/></filter>';
 const LEG=mk('g',{});
 const edgeLayer=mk('g',{}),EL={};
 for(const k in E)EL[k]=mk('path',{d:rpath(E[k],HOPS[k]),fill:'none',stroke:NEU,'stroke-width':1.5,'stroke-linecap':'round','stroke-linejoin':'round',style:'transition:stroke .45s,opacity .45s'},edgeLayer);
-const trail=mk('g',{}),flow=mk('g',{}),nodeLayer=mk('g',{}),tokLayer=mk('g',{});
+const trail=mk('g',{}),flow=mk('g',{}),tokLayer=mk('g',{}),nodeLayer=mk('g',{});
 const G={},GI={};
 const txt=(x,y,s,size,g,w,fill,anchor)=>{const t=mk('text',{x,y,'text-anchor':anchor||'middle',class:'lab','font-size':size,'font-weight':w,fill,'letter-spacing':'-0.01em'},g);t.textContent=s;return t};
 for(const id in N){const n=N[id],g=mk('g',{},nodeLayer),inner=mk('g',{},g);G[id]=g;GI[id]=inner;
@@ -184,8 +184,7 @@ const SPEED=104,WORK_KEY=3.1,WORK=2.5,HOLD=1.5,END=3.6;
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=id=>document.getElementById(id);
 $('pick').insertAdjacentHTML('beforeend',PICKS.map(p=>`<button class="opt" data-k="${p[0]}" role="tab"><i></i>${p[1]}</button>`).join(''));
-let cur,seq,i,phase,t,dur,paused=false,path=null,pathL=0,lastNow=0,dash=0,tokSc=1,tokPt=[0,0],tokOver=true;
-function tokLayerOver(v){if(v===tokOver)return;tokOver=v;v?svg.appendChild(tokLayer):svg.insertBefore(tokLayer,nodeLayer)}
+let cur,seq,i,phase,t,dur,paused=false,path=null,pathL=0,lastNow=0,dash=0,tokSc=1,tokPt=[0,0];
 function movePill(){const b=document.querySelector('.opt.on');if(!b)return;
  const p=$('pill');p.style.width=b.offsetWidth+'px';p.style.height=b.offsetHeight+'px';p.style.transform=`translateX(${b.offsetLeft-4}px) translateY(${b.offsetTop-4}px)`}
 function milestones(){return seq.map((s,j)=>({s,j})).filter(o=>o.s[3])}
@@ -226,7 +225,7 @@ function next(){if(i>=seq.length-1){phase='end';t=0;dur=END;markSteps();return}
  flow.innerHTML='';mk('path',{d,fill:'none',stroke:'url(#flowg)','stroke-width':2.6,'stroke-linecap':'round',opacity:.35,'stroke-dasharray':'1 13'},flow);
  tokBg.setAttribute('fill',col);halo.setAttribute('fill',col);
  pathL=path.getTotalLength();path.style.strokeDasharray=`${pathL} ${pathL}`;path.style.strokeDashoffset=pathL;
- i++;phase='move';t=0;dur=reduce?.01:Math.max(1.5,pathL/SPEED);tokLayerOver(false);
+ i++;phase='move';t=0;dur=reduce?.01:Math.max(1.5,pathL/SPEED);
  tokIcon.innerHTML=ICON[seq[i][4]];placeTok(pts[0]);showTok(true);markSteps()}
 function frame(now){const dt=Math.min(.05,(now-(lastNow||now))/1000);lastNow=now;
  for(const id in N){const n=N[id];
@@ -236,7 +235,6 @@ function frame(now){const dt=Math.min(.05,(now-(lastNow||now))/1000);lastNow=now
   else GI[id].removeAttribute('transform')}
  if(!paused&&seq){t+=dt;const p=Math.min(1,t/dur),id=seq[i][0];
   if(phase==='move'){const d=pathL*ease(p),q=path.getPointAtLength(d);placeTok([q.x,q.y]);path.style.strokeDashoffset=pathL-d;
-   tokLayerOver(p>.4);
    dash=(dash-dt*46)%14;flow.firstChild&&flow.firstChild.setAttribute('stroke-dashoffset',dash);
    halo.setAttribute('opacity',(.14*Math.sin(t*6)+.16).toFixed(3));
    halo.setAttribute('r',(20+3*Math.sin(t*6)).toFixed(2));
