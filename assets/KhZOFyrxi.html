@@ -1,5 +1,76 @@
-<!DOCTYPE html> <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"> <style>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
 @font-face{font-family:'Uncut Sans';src:url(https://cdn.jsdelivr.net/gh/kaspernordkvist/uncut_sans@b3b42467781e3bd98c68f2d70eba325196e7d9c5/Webfonts/UncutSans-Variable.woff2) format('woff2');font-weight:300 700;font-style:normal;font-display:swap}
-html,body{width:100%}body{display:block!important}body>div{width:100%} *{margin:0;padding:0;box-sizing:border-box} html,body{background:transparent;font-family:'Uncut Sans',-apple-system,sans-serif;color:#121212;-webkit-font-smoothing:antialiased} .wrap{padding:8px 4px;display:flex;flex-direction:column;gap:20px} .label{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.02em;color:#696970} .label::after{content:"";flex:1;height:1px;background:#E5E5E5} .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;position:relative} .card{position:relative;background:#fff;border:1px solid #E5E5E5;border-radius:20px;padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(10px);animation:in .5s ease forwards} .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.15s}.card:nth-child(3){animation-delay:.25s}.card:nth-child(4){animation-delay:.35s}.card:nth-child(5){animation-delay:.45s} @keyframes in{to{opacity:1;transform:none}} .card:not(:last-child)::after{content:"";position:absolute;right:-13px;top:38px;width:14px;height:1px;background:#7DB9EA} .num{width:32px;height:32px;border-radius:50%;background:#C8E3F7;color:#0063B8;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center} .card h4{font-size:16px;font-weight:600;line-height:1.25} .card p{font-size:13px;line-height:1.5;color:#696970} .systems{display:flex;align-items:center;justify-content:center;gap:10px;background:#F2F8FD;border:1px dashed #7DB9EA;border-radius:12px;padding:12px;font-size:13px;color:#0063B8;font-weight:500} @media (max-width:760px){.flow{grid-template-columns:1fr}.card:not(:last-child)::after{right:auto;left:34px;top:auto;bottom:-13px;width:1px;height:14px}} 
-@media (prefers-reduced-motion:reduce){.card{animation:none!important;opacity:1!important;transform:none!important}} @media (min-width:900px){body{min-height:400px}}
-@media (max-width:440px){.wrap{gap:12px}.label{gap:10px}.flow{gap:10px}.card{padding:14px 12px 14px}.systems{padding:10px}}</style></head><body> <div class="wrap"> <div class="label">Streamliner · CRE lifecycle</div> <div class="flow"> <div class="card"><div class="num">1</div><h4>Create &amp; Edit</h4><p>Captures Credit, Return, and Exchange requests, pulls order and product details, and validates policy rules into a standard CRE case.</p></div> <div class="card"><div class="num">2</div><h4>Verify &amp; Review</h4><p>Checks eligibility and applies business policies to approve, reject, or flag a request for review.</p></div> <div class="card"><div class="num">3</div><h4>Return Method</h4><p>Selects the right logistics method and generates shipping instructions for the return or exchange.</p></div> <div class="card"><div class="num">4</div><h4>Process &amp; Track</h4><p>Runs return operations across enterprise systems with status visibility and a full CRE history.</p></div> <div class="card"><div class="num">5</div><h4>Disposition &amp; Recovery</h4><p>Handles inspection outcomes, refunds, replacements, and inventory recovery after the item arrives.</p></div> </div> <div class="systems">Every module integrates with Dell's enterprise systems. Regions share the structure; only the business rules change.</div> </div> </body></html> 
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;background:transparent;font-family:'Uncut Sans',-apple-system,sans-serif;color:#121212;-webkit-font-smoothing:antialiased}
+body{display:block!important}body>div{width:100%}
+.wrap{padding:8px 4px;display:flex;flex-direction:column;gap:18px}
+.label{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.02em;color:#696970}
+.label::after{content:"";flex:1;height:1px;background:#E5E5E5}
+
+/* head */
+.head{display:flex;justify-content:center}
+.pill{background:#0672CB;color:#fff;font-size:15px;font-weight:600;letter-spacing:.01em;padding:11px 26px;border-radius:999px;opacity:0;transform:translateY(-6px);animation:in .45s ease forwards}
+.cap{display:block;text-align:center;margin-top:7px;font-size:12px;color:#696970;font-weight:500}
+.stem{width:2px;height:20px;background:#D5D7DB;margin:0 auto;transform-origin:top;transform:scaleY(0);animation:grow .3s ease .35s forwards}
+
+/* rail */
+.rail{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:44px}
+.branch{position:relative;opacity:0;animation:fade .3s ease forwards}
+.branch::before{content:"";position:absolute;top:6px;left:-12px;right:-12px;height:2px;background:#D5D7DB}
+.branch:first-child::before{left:calc(50% - 1px)}
+.branch:last-child::before{right:calc(50% - 1px)}
+.branch::after{content:"";position:absolute;top:6px;left:calc(50% - 1px);width:2px;height:38px;background:#D5D7DB}
+.dot{position:absolute;top:0;left:calc(50% - 7px);width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #0672CB;z-index:1}
+.branch:nth-child(1){animation-delay:.5s}.branch:nth-child(2){animation-delay:.56s}.branch:nth-child(3){animation-delay:.62s}.branch:nth-child(4){animation-delay:.68s}.branch:nth-child(5){animation-delay:.74s}
+
+/* cards */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.card{background:#fff;border:1px solid #E5E5E5;border-radius:18px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(8px);animation:in .45s ease forwards}
+.card:nth-child(1){animation-delay:.58s}.card:nth-child(2){animation-delay:.64s}.card:nth-child(3){animation-delay:.70s}.card:nth-child(4){animation-delay:.76s}.card:nth-child(5){animation-delay:.82s}
+.card h4{font-size:15px;font-weight:600;line-height:1.25}
+.card p{font-size:12.5px;line-height:1.5;color:#696970}
+
+.systems{display:flex;align-items:center;justify-content:center;gap:10px;background:#F2F8FD;border:1px dashed #7DB9EA;border-radius:12px;padding:12px;font-size:13px;color:#0063B8;font-weight:500;text-align:center}
+
+@keyframes in{to{opacity:1;transform:none}}
+@keyframes grow{to{transform:scaleY(1)}}
+@keyframes fade{to{opacity:1}}
+
+@media (max-width:760px){
+  .rail{display:none}
+  .flow{grid-template-columns:1fr;gap:0}
+  .card{position:relative;margin-top:14px}
+  .card::before{content:"";position:absolute;top:-15px;left:calc(50% - 1px);width:2px;height:14px;background:#D5D7DB}
+  .card:first-child{margin-top:0}
+  .card:first-child::before{display:none}
+}
+@media (max-width:440px){.wrap{gap:12px}.card{padding:13px 12px 14px}.systems{padding:10px;font-size:12.5px}}
+@media (prefers-reduced-motion:reduce){.pill,.card,.branch,.stem{animation:none!important;opacity:1!important;transform:none!important}}
+@media (min-width:900px){body{min-height:446px}}
+</style></head><body>
+<div class="wrap">
+  <div class="label">Streamliner · What the platform is made of</div>
+
+  <div class="head"><div><div class="pill">Streamliner</div><span class="cap">One platform, five modules</span></div></div>
+  <div class="stem"></div>
+  <div class="rail">
+    <div class="branch"><div class="dot"></div></div>
+    <div class="branch"><div class="dot"></div></div>
+    <div class="branch"><div class="dot"></div></div>
+    <div class="branch"><div class="dot"></div></div>
+    <div class="branch"><div class="dot"></div></div>
+  </div>
+
+  <div class="flow">
+    <div class="card"><h4>Create &amp; Edit</h4><p>Captures Credit, Return, and Exchange requests, pulls order and product details, and validates policy rules into a standard CRE case.</p></div>
+    <div class="card"><h4>Verify &amp; Review</h4><p>Checks eligibility and applies business policies to approve, reject, or flag a request for review.</p></div>
+    <div class="card"><h4>Return Method</h4><p>Selects the right logistics method and generates shipping instructions for the return or exchange.</p></div>
+    <div class="card"><h4>Process &amp; Track</h4><p>Runs return operations across enterprise systems with status visibility and a full CRE history.</p></div>
+    <div class="card"><h4>Disposition &amp; Recovery</h4><p>Handles inspection outcomes, refunds, replacements, and inventory recovery after the item arrives.</p></div>
+  </div>
+
+  <div class="systems">Every module integrates with Dell's enterprise systems. Regions share the structure; only the business rules change.</div>
+</div>
+</body></html>
