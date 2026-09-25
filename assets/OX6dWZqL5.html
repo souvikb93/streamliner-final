@@ -7,15 +7,15 @@ html,body{width:100%;min-height:100%;overflow:hidden;background:transparent;font
 body{display:block!important}
 .app{width:100vw;max-width:1200px;padding:2px;display:flex;flex-direction:column}
 .top{display:flex;align-items:center;padding:2px 2px 14px;border-bottom:1px solid var(--line)}
-.pick{flex:none;display:flex;gap:3px;background:#fff;border:1px solid var(--line2);padding:4px;border-radius:999px;box-shadow:0 1px 2px rgba(18,18,18,.04)}
-.opt{font:inherit;position:relative;display:flex;align-items:center;gap:8px;height:34px;padding:0 14px 0 12px;border-radius:999px;border:0;background:transparent;cursor:pointer;color:var(--ink2);font-size:13px;font-weight:600;transition:color .25s}
-.opt i{width:7px;height:7px;border-radius:50%;background:#D9D9DE;flex:none;transition:background .3s,transform .3s}
-.opt:hover{color:var(--ink)}
-.opt.on{color:#fff}
+.pick{flex:none;display:inline-flex;align-items:center;justify-content:center;background:#F4F4F5;padding:2px;border-radius:8px}
+.opt{font:inherit;position:relative;display:flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:6px;border:0;background:transparent;cursor:pointer;color:rgba(113,113,122,.7);font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.opt i{display:none;width:7px;height:7px;border-radius:50%;background:#D9D9DE;flex:none;transition:background .3s,transform .3s}
+.opt:hover{color:#71717A}
+.opt.on{color:#09090B}
 .opt.on i{background:var(--green-dot);transform:scale(1.15);animation:bl 1.3s ease-in-out infinite;box-shadow:0 0 0 0 rgba(61,220,132,.5)}
 @keyframes bl{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(61,220,132,.45)}50%{opacity:.4;box-shadow:0 0 0 4px rgba(61,220,132,0)}}
-.opt:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
-.pill{position:absolute;top:4px;left:4px;height:34px;border-radius:999px;background:var(--deep);z-index:0;transition:transform .42s cubic-bezier(.34,1.24,.5,1),width .42s cubic-bezier(.34,1.24,.5,1)}
+.opt:focus-visible{outline:2px solid rgba(161,161,170,.7);outline-offset:2px}
+.pill{position:absolute;top:2px;left:2px;height:32px;border-radius:6px;background:#fff;box-shadow:0 1px 2px 0 rgba(0,0,0,.05);z-index:0;transition:transform .42s cubic-bezier(.34,1.24,.5,1),width .42s cubic-bezier(.34,1.24,.5,1)}
 .pick{position:relative}.opt{z-index:1}
 .canvas{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 1px 2px rgba(18,18,18,.03)}
 svg.map{display:block;width:100%;height:auto;overflow:visible}
@@ -186,7 +186,7 @@ const $=id=>document.getElementById(id);
 $('pick').insertAdjacentHTML('beforeend',PICKS.map(p=>`<button class="opt" data-k="${p[0]}" role="tab"><i></i>${p[1]}</button>`).join(''));
 let cur,seq,i,phase,t,dur,paused=false,path=null,pathL=0,lastNow=0,dash=0,tokSc=1,tokPt=[0,0];
 function movePill(){const b=document.querySelector('.opt.on');if(!b)return;
- const p=$('pill');p.style.width=b.offsetWidth+'px';p.style.height=b.offsetHeight+'px';p.style.transform=`translateX(${b.offsetLeft-4}px) translateY(${b.offsetTop-4}px)`}
+ const p=$('pill');p.style.width=b.offsetWidth+'px';p.style.height=b.offsetHeight+'px';p.style.transform=`translateX(${b.offsetLeft-2}px) translateY(${b.offsetTop-4}px)`}
 function milestones(){return seq.map((s,j)=>({s,j})).filter(o=>o.s[3])}
 function renderSteps(){const ms=milestones();
  $('steps').innerHTML=ms.map((o,k)=>`${k?'<span class="sep" data-j="'+o.j+'" data-p="'+ms[k-1].j+'"></span>':''}<span class="s" data-j="${o.j}"><span class="dot"></span><span class="lb">${o.s[3].replace(' ','<br>')}</span></span>`).join('')}
