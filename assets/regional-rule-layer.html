@@ -1,1 +1,116 @@
-<!DOCTYPE html> <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"> <style> @font-face{font-family:'Uncut Sans';src:url(https://cdn.jsdelivr.net/gh/kaspernordkvist/uncut_sans@b3b42467781e3bd98c68f2d70eba325196e7d9c5/Webfonts/UncutSans-Variable.woff2) format('woff2');font-weight:300 700;font-style:normal;font-display:swap} html,body{width:100%}body{display:block!important}body>div{width:100%} *{margin:0;padding:0;box-sizing:border-box} html,body{background:transparent;font-family:'Uncut Sans',-apple-system,sans-serif;color:#121212;-webkit-font-smoothing:antialiased} .wrap{display:flex;flex-direction:column;gap:14px;padding:4px} .top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap} .label{font-size:12px;font-weight:600;letter-spacing:.02em;color:#696970} .tabs{display:flex;gap:2px;background:#F0F1F4;padding:3px;border-radius:999px} .tabs button{font:inherit;font-size:13px;font-weight:500;border:0;background:transparent;padding:8px 14px;border-radius:999px;color:#454548;cursor:pointer;transition:.2s} .tabs button.on{background:#0672CB;color:#fff} .tabs button:focus-visible{outline:2px solid #0672CB;outline-offset:2px} .layer{display:grid;grid-template-columns:130px repeat(5,1fr);gap:10px;align-items:stretch} .lname{display:flex;flex-direction:column;justify-content:center;gap:4px} .lname b{font-size:13px;font-weight:600} .lname small{font-size:11.5px;color:#696970;line-height:1.35} .mod{border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px} .core .mod{background:#0672CB;color:#fff} .core .mod b{font-size:14px} .core .mod small{font-size:11.5px;color:#F2F8FD;line-height:1.4} .rules .mod{background:#fff;border:1px dashed #7DB9EA;min-height:150px} .rule{font-size:12px;line-height:1.4;border-radius:8px;padding:7px 9px;background:#F2F8FD;transition:background .35s,color .35s} .rule em{display:block;font-style:normal;font-size:11px;color:#696970;letter-spacing:.02em;margin-bottom:2px} .rule span{font-weight:600;color:#0063B8} .rule.chg{background:#FFF1DB} .rule.chg span{color:#A15C00} .join{display:grid;grid-template-columns:130px repeat(5,1fr);gap:10px;height:18px} .join div{position:relative} .join div::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px dotted #7DB9EA} .join div:first-child::after{display:none} .note{font-size:12.5px;color:#696970;display:flex;gap:16px;flex-wrap:wrap;align-items:center} .key{display:inline-flex;align-items:center;gap:6px} .key i{width:12px;height:12px;border-radius:3px;display:inline-block} @media (max-width:820px){.layer,.join{grid-template-columns:1fr}.join{display:none}}  @media (min-width:900px){body{min-height:420px}} @media (max-width:440px){.wrap{gap:10px}.top{gap:12px}.tabs button{padding:11px 10px}.mod{padding:10px}.note{gap:12px}}</style></head><body> <div class="wrap"> <div class="top">   <div class="label">Same core, different rules</div>   <div class="tabs" id="tabs">     <button class="on" data-p="0">Region profile A</button>     <button data-p="1">Region profile B</button>   </div> </div> <div class="layer core">   <div class="lname"><b>Global core</b><small>Identical in every country</small></div>   <div class="mod"><b>Create &amp; Edit</b><small>Standard CRE case</small></div>   <div class="mod"><b>Verify &amp; Review</b><small>Rule-based decision</small></div>   <div class="mod"><b>Return Method</b><small>Logistics &amp; shipping</small></div>   <div class="mod"><b>Process &amp; Track</b><small>Status &amp; history</small></div>   <div class="mod"><b>Disposition &amp; Recovery</b><small>Refund &amp; recovery</small></div> </div> <div class="join"><div></div><div></div><div></div><div></div><div></div><div></div></div> <div class="layer rules" id="rules">   <div class="lname"><b>Regional rule layer</b><small>Configured per country, not rebuilt</small></div> </div> <div class="note">   <span class="key"><i style="background:#F2F8FD;border:1px solid #C8E3F7"></i>Shared default</span>   <span class="key"><i style="background:#FFF1DB"></i>Local rule for this region</span>   <span>Two example profiles, built from the regional variations found in research.</span> </div> </div> <script> const M=[  [["Request types",["Credit · Return · Exchange","Credit · Return · Exchange"]],["Policy check",["Shared policy rules","Shared policy rules"]]],  [["Auto-decision rules",["Policy + margin + history","Policy + margin + history"]],["Exceptions",["Routed to care agent","Routed to care agent"]]],  [["Carrier booking",["Integrated with carrier","Manual portal / email"]],["Return mode",["Carrier pickup","Drop-off at return facility"]]],  [["Customer updates",["Automated status","Automated status"]],["Currency",["Local","Local"]]],  [["Refund trigger",["At pickup","At warehouse receipt"]],["Expected timeline",["5–7 days","2–4 weeks"]]] ]; const R=document.getElementById('rules'); const cols=M.map(()=>{const d=document.createElement('div');d.className='mod';R.appendChild(d);return d}); function render(p){M.forEach((rules,i)=>{cols[i].innerHTML=rules.map(([n,v])=>`<div class="rule ${v[0]!==v[1]?'chg':''}"><em>${n}</em><span>${v[p]}</span></div>`).join('')})} render(0); document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));render(+b.dataset.p)}); </script> </body></html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+@font-face{font-family:'Uncut Sans';src:url(https://cdn.jsdelivr.net/gh/kaspernordkvist/uncut_sans@b3b42467781e3bd98c68f2d70eba325196e7d9c5/Webfonts/UncutSans-Variable.woff2) format('woff2');font-weight:300 700;font-style:normal;font-display:swap}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;background:transparent;font-family:'Uncut Sans',-apple-system,sans-serif;color:#121212;-webkit-font-smoothing:antialiased}
+body{display:block!important}body>div{width:100%}
+:root{--line:#E9E9EC;--blue:#0672CB;--blue-ink:#0669BB;--blue-tint:#EBF4FB;--blue-edge:#C6DEF2;--amb-ink:#8A4E00;--amb-tint:#F6EFE6;--amb-edge:#E8D6BC;--sub:#696970}
+.wrap{display:flex;flex-direction:column;gap:16px;padding:4px}
+
+/* toggle — shared component, same as the system diagram */
+.top{display:flex;flex-direction:column;align-items:flex-start;gap:9px}
+.pick{position:relative;flex:none;display:inline-flex;align-items:center;justify-content:center;background:#EFEFF1;padding:2px;border-radius:8px}
+.pill{position:absolute;top:2px;left:2px;height:32px;border-radius:6px;background:#fff;border:1px solid #E1E1E5;box-shadow:0 1px 2px 0 rgba(18,18,18,.06);z-index:0;transition:transform .42s cubic-bezier(.34,1.24,.5,1),width .42s cubic-bezier(.34,1.24,.5,1)}
+.opt{font:inherit;position:relative;z-index:1;display:flex;align-items:center;height:32px;padding:0 12px;border-radius:6px;border:0;background:transparent;cursor:pointer;color:rgba(113,113,122,.7);font-size:14px;font-weight:500;white-space:nowrap;transition:color .2s,font-weight .2s}
+.opt:hover{color:#71717A}
+.opt.on{color:#09090B;font-weight:600}
+.opt:focus-visible{outline:2px solid rgba(161,161,170,.7);outline-offset:2px}
+.src{font-size:12.5px;color:var(--sub);line-height:1.45}
+
+/* layers */
+.layer{display:grid;grid-template-columns:130px repeat(5,1fr);gap:12px;align-items:stretch}
+.lname{display:flex;flex-direction:column;justify-content:center;gap:4px}
+.lname b{font-size:13px;font-weight:600}
+.lname small{font-size:11.5px;color:var(--sub);line-height:1.35}
+.mod{border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;opacity:0;transform:translateY(8px);animation:in .45s ease forwards}
+.core .mod{background:var(--blue-tint);border:1px solid var(--blue-edge)}
+.core .mod b{font-size:14px;font-weight:600;line-height:1.25}
+.core .mod small{font-size:11.5px;color:#4E5A66;line-height:1.4}
+.rules .mod{background:#fff;border:1px dashed var(--blue-edge);min-height:150px;gap:8px}
+.core .mod:nth-child(2){animation-delay:.05s}.core .mod:nth-child(3){animation-delay:.11s}.core .mod:nth-child(4){animation-delay:.17s}.core .mod:nth-child(5){animation-delay:.23s}.core .mod:nth-child(6){animation-delay:.29s}
+.rules .mod:nth-child(2){animation-delay:.34s}.rules .mod:nth-child(3){animation-delay:.40s}.rules .mod:nth-child(4){animation-delay:.46s}.rules .mod:nth-child(5){animation-delay:.52s}.rules .mod:nth-child(6){animation-delay:.58s}
+
+.rule{font-size:12px;line-height:1.4;border-radius:9px;padding:8px 10px;background:#F6F9FC;border:1px solid #E7EFF6}
+.rule em{display:block;font-style:normal;font-size:11px;color:var(--sub);letter-spacing:.02em;margin-bottom:3px}
+.rule span{font-weight:600;color:var(--blue-ink)}
+.rule.chg{background:var(--amb-tint);border-color:var(--amb-edge)}
+.rule.chg span{color:var(--amb-ink)}
+.rule.swap{animation:swap .5s ease}
+@keyframes swap{0%{opacity:.35;transform:translateY(-3px)}100%{opacity:1;transform:none}}
+
+.join{display:grid;grid-template-columns:130px repeat(5,1fr);gap:12px;height:18px}
+.join div{position:relative}
+.join div::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px dotted var(--blue-edge)}
+.join div:first-child::after{display:none}
+
+.note{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--sub);padding-top:2px;border-top:1px solid var(--line);margin-top:2px}
+.key{display:inline-flex;align-items:center;gap:6px;padding-top:10px}
+.key i{width:12px;height:12px;border-radius:4px;display:inline-block;flex:none}
+
+@keyframes in{to{opacity:1;transform:none}}
+@media (max-width:820px){.layer,.join{grid-template-columns:1fr}.join{display:none}.rules .mod{min-height:0}}
+@media (max-width:440px){.wrap{gap:12px}.mod{padding:11px}.note{gap:12px}}
+@media (prefers-reduced-motion:reduce){.mod{animation:none!important;opacity:1!important;transform:none!important}.pill,.opt{transition:none}.rule.swap{animation:none}}
+@media (min-width:900px){body{min-height:431px}}
+</style></head><body>
+<div class="wrap">
+  <div class="top">
+    <div class="pick" id="pick" role="tablist" aria-label="Region profile"><span class="pill" id="pill"></span></div>
+    <p class="src">Two example profiles, built from the regional variations found in research.</p>
+  </div>
+
+  <div class="layer core">
+    <div class="lname"><b>Global core</b><small>Identical in every country</small></div>
+    <div class="mod"><b>Create &amp; Edit</b><small>Standard CRE case</small></div>
+    <div class="mod"><b>Verify &amp; Review</b><small>Rule-based decision</small></div>
+    <div class="mod"><b>Return Method</b><small>Logistics &amp; shipping</small></div>
+    <div class="mod"><b>Process &amp; Track</b><small>Status &amp; history</small></div>
+    <div class="mod"><b>Disposition &amp; Recovery</b><small>Refund &amp; recovery</small></div>
+  </div>
+
+  <div class="join"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+  <div class="layer rules" id="rules">
+    <div class="lname"><b>Regional rule layer</b><small>Configured per country, not rebuilt</small></div>
+  </div>
+
+  <div class="note">
+    <span class="key"><i style="background:#F6F9FC;border:1px solid #E7EFF6"></i>Same in both profiles</span>
+    <span class="key"><i style="background:#F6EFE6;border:1px solid #E8D6BC"></i>Varies by region</span>
+  </div>
+</div>
+<script>
+const M=[
+ [["Request types",["Credit · Return · Exchange","Credit · Return · Exchange"]],["Policy check",["Shared policy rules","Shared policy rules"]]],
+ [["Auto-decision rules",["Policy + margin + history","Policy + margin + history"]],["Exceptions",["Routed to care agent","Routed to care agent"]]],
+ [["Carrier booking",["Integrated with carrier","Manual portal / email"]],["Return mode",["Carrier pickup","Drop-off at return facility"]]],
+ [["Customer updates",["Automated status","Automated status"]],["Currency",["Local","Local"]]],
+ [["Refund trigger",["At pickup","At warehouse receipt"]],["Expected timeline",["5–7 days","2–4 weeks"]]]
+];
+const PICKS=[["0","Region profile A"],["1","Region profile B"]];
+const $=id=>document.getElementById(id);
+const R=$('rules');
+const cols=M.map(()=>{const d=document.createElement('div');d.className='mod';R.appendChild(d);return d});
+
+$('pick').insertAdjacentHTML('beforeend',PICKS.map(p=>`<button class="opt" data-p="${p[0]}" role="tab" aria-selected="false">${p[1]}</button>`).join(''));
+
+function movePill(){const b=document.querySelector('.opt.on');if(!b)return;
+ const p=$('pill');p.style.width=b.offsetWidth+'px';p.style.height=b.offsetHeight+'px';
+ p.style.transform=`translate(${b.offsetLeft-p.offsetLeft}px,${b.offsetTop-p.offsetTop}px)`}
+
+let first=true;
+function render(p){
+ M.forEach((rules,i)=>{
+  cols[i].innerHTML=rules.map(([n,v])=>{
+   const chg=v[0]!==v[1];
+   return `<div class="rule ${chg?'chg':''}${!first&&chg?' swap':''}"><em>${n}</em><span>${v[p]}</span></div>`}).join('')});
+ document.querySelectorAll('.opt').forEach(b=>{const on=b.dataset.p===String(p);b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+ movePill();first=false}
+
+$('pick').onclick=e=>{const b=e.target.closest('.opt');if(b)render(+b.dataset.p)};
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(movePill);
+window.addEventListener('resize',movePill);
+render(0);
+</script>
+</body></html>
