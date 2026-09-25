@@ -63,7 +63,7 @@ measures the embed document and writes the result back to the node.
 | `rDjTt_Ep8` | Core + rule layer | 420 |
 | `CLTQi8f4o` | Overview stats | 400 |
 | `gdBqnnNCX` | 17 → 7 → 3 → 1 funnel | 400 |
-| `KhZOFyrxi` | Five modules | 384 |
+| `KhZOFyrxi` | Five modules | 351 |
 | `zX_dFoAE6` | Impact | 300 |
 | `hCEOXL0l5` | Five-step process | 220 |
 
