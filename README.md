@@ -49,7 +49,7 @@ measures the embed document and writes the result back to the node.
 | Node | Asset | Desktop height |
 |---|---|---|
 | `OX6dWZqL5` | To-be system diagram | 700 |
-| `r_BbsYwDY` | To-be service blueprint | 700 |
+| `iVhhBwFBm` | To-be service blueprint | 678 |
 | `cJPS6EXdE` | Journey map | 700 |
 | `irYUR150B` | Decisions and trade-offs | 660 |
 | `k567uewrD` | Synthesis — findings to opportunities | 644 |
