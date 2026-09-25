@@ -584,3 +584,30 @@ finished node has more to say than an idle one.
 Weight and fill now advance together and both hold at the end. `stroke-width` was
 also removed from the CSS transition list — with a per-frame value, a 400ms ease
 makes the stroke lag its own fill.
+
+## Programme timeline (ju9AZVRUT)
+
+Hosted separately: https://github.com/souvikb93/Stramliner_timeline
+Live: https://souvikb93.github.io/Stramliner_timeline/
+
+Seven regional research tracks and five workstreams on a 52-week grid. Bars are
+positioned in weeks, never pixels, and the month axis is derived from the same
+scale — so rescheduling is editing two numbers.
+
+Phase colours reuse the group palette: Discover `#0672CB`, Synthesise `#7C3AED`,
+Co-create `#A15C00`, Design & define `#B02071`, Validate & pilot `#0B6E4F`. Each
+clears 4.5:1 on white, so white bar labels are legible at 9.5px.
+
+**Overlap is the content.** A programme plan that reads as a neat staircase is
+lying about how the work ran. Synthesis opens in week 8 while four regions are
+still in the field; design and the rules layer run together for thirteen weeks.
+The playhead exists to make those simultaneities visible — the footer names every
+track running at the current week, so two or three names at once *is* the point.
+
+Secondary work (follow-up sessions) uses a thin bar at 11px against the main
+19px, so a row can carry two kinds of activity without reading as two rows.
+
+**The schedule is illustrative.** Region names, country lists and interview
+counts are real and match the research map. The week numbers are a
+reconstruction and are flagged in that repo's README — they need replacing with
+the real dates before this is shown to anyone who was on the project.
