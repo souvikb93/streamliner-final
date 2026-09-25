@@ -14,9 +14,9 @@ html,body{background:transparent;font-family:'Uncut Sans',-apple-system,sans-ser
 .ctl button:hover{color:#121212}
 .ctl button.on{background:#0672CB;color:#fff}
 .ctl button:focus-visible{outline:2px solid #0672CB;outline-offset:2px}
-.stage{position:relative;border:1px solid #D4D4D8;border-radius:16px;background:#fff;overflow:hidden;display:grid;grid-template-columns:104px minmax(0,1fr)}
-.rail{border-right:1px solid #D4D4D8;background:#F4F6FA;position:relative}
-.rl{position:absolute;left:10px;right:10px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:9.5px;font-weight:700;letter-spacing:.03em;line-height:1.2;color:#fff;background:#3B4FD8;border-radius:6px;padding:6px 4px}
+.stage{position:relative;border:1px solid #E5E5E5;border-radius:14px;background:#fff;overflow:hidden;display:grid;grid-template-columns:104px minmax(0,1fr)}
+.rail{border-right:1px solid #E5E5E5;background:#F4F6FA;position:relative}
+.rl{position:absolute;left:12px;right:10px;display:flex;align-items:center;text-align:left;font-size:10px;font-weight:600;letter-spacing:-.01em;line-height:1.25;color:#121212}
 .rd{position:absolute;left:8px;right:8px;font-size:8.5px;font-weight:600;color:#696970;line-height:1.15;text-align:right}
 .view{position:relative;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth}
 .view::-webkit-scrollbar{height:6px}.view::-webkit-scrollbar-thumb{background:#D4D4D8;border-radius:3px}
@@ -27,17 +27,17 @@ svg.lk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;over
 svg.lk path{fill:none;stroke:#A1A1AA;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:0;stroke-dasharray:100 100;stroke-dashoffset:100}
 svg.lk path.hot{opacity:1;stroke-dashoffset:0;stroke:#121212;stroke-width:1.8;transition:stroke-dashoffset .45s cubic-bezier(.4,0,.2,1),opacity .12s linear}
 svg.lk path.past{opacity:.4;stroke-dashoffset:0;stroke:#A1A1AA}
-.c{position:absolute;border-radius:7px;overflow:hidden;cursor:pointer;text-align:left;font:inherit;border:1px solid transparent;opacity:.32;transform:translateY(2px);transition:opacity .3s,transform .3s cubic-bezier(.34,1.3,.5,1),box-shadow .3s}
-.c.seen{opacity:.72;transform:none}
-.c.on{opacity:1;transform:none scale(1);box-shadow:0 0 0 2px #121212,0 8px 18px rgba(18,18,18,.16);z-index:4}
+.c{position:absolute;border-radius:8px;overflow:hidden;cursor:pointer;text-align:left;font:inherit;background:#fff;border:1px solid var(--c);opacity:.45;transition:opacity .3s,background .3s,box-shadow .3s}
+.c.seen{opacity:.78}
+.c.on{opacity:1;background:var(--tint);box-shadow:0 3px 10px rgba(18,18,18,.12);z-index:4}
 .c:focus-visible{outline:2px solid #0672CB;outline-offset:2px}
-.c h5{font-size:9px;font-weight:700;letter-spacing:.02em;padding:4px 7px 3px;color:#fff;line-height:1.1}
-.c p{font-size:9.5px;line-height:1.3;padding:4px 7px 6px;background:#fff;color:#121212;height:100%;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.note{position:absolute;z-index:6;background:#FDF3C7;border:1px solid #EBD98A;border-radius:6px;padding:5px 7px;font-size:9px;line-height:1.32;color:#5C4A08;opacity:0;pointer-events:none;box-shadow:0 4px 10px rgba(18,18,18,.10);transition:opacity .25s}
+.c h5{font-size:8.5px;font-weight:700;letter-spacing:.01em;padding:5px 8px 2px;color:var(--c);line-height:1.1}
+.c p{font-size:9.5px;line-height:1.32;padding:0 8px 7px;background:transparent;color:#121212;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.note{position:absolute;z-index:6;background:#FDF8F0;border:1px solid #E8D9C2;border-radius:7px;padding:6px 8px;font-size:9px;line-height:1.35;color:#A15C00;opacity:0;pointer-events:none;box-shadow:0 2px 8px rgba(18,18,18,.07);transition:opacity .25s}
 .note.on{opacity:1}
-.grp{position:absolute;border:1.5px dashed #EC6FA9;border-radius:12px;pointer-events:none;opacity:0;transition:opacity .35s}
+.grp{position:absolute;border:1.5px dashed #0672CB;border-radius:12px;pointer-events:none;opacity:0;transition:opacity .35s}
 .grp.on{opacity:1}
-.grp span{position:absolute;top:-9px;left:12px;background:#fff;padding:0 6px;font-size:9px;font-weight:700;color:#D6438A}
+.grp span{position:absolute;top:-9px;left:12px;background:#fff;padding:0 6px;font-size:9px;font-weight:700;color:#0672CB}
 .prog{display:flex;align-items:center;gap:6px;font-size:11px;color:#696970}
 .prog .track{flex:1;height:4px;border-radius:999px;background:#F0F1F4;overflow:hidden}
 .prog .fill{height:100%;background:#0672CB;width:0;transition:width .4s linear}
@@ -62,10 +62,12 @@ svg.lk path.past{opacity:.4;stroke-dashoffset:0;stroke:#A1A1AA}
  <div class="prog"><div class="track"><div class="fill" id="pf"></div></div><b id="pc"></b></div>
 </div>
 <script>
-const SYS={sfdc:['SFDC','#E2574C'],ce:['Create & Edit','#F2994A'],vr:['Verify & Review','#EC6FA9'],
- vru:['Verify & Review UI','#D6438A'],pt:['Process & Track','#7E6BD9'],db:['P&T Database','#5B4BBF'],
- sods:['SODS','#3FA796'],arg:['AR Gateway','#52B788'],ars:['AR STORE','#7DC9A0'],om:['OMEGA','#2F8F7F'],
- usr:['User journey','#F6C453']};
+const SYS={sfdc:['SFDC','#7C3AED'],ce:['Create & Edit','#0672CB'],vr:['Verify & Review','#0672CB'],
+ vru:['Verify & Review UI','#0672CB'],pt:['Process & Track','#0672CB'],db:['P&T Database','#B02071'],
+ sods:['SODS','#B02071'],arg:['AR Gateway','#0B6E4F'],ars:['AR STORE','#0B6E4F'],om:['OMEGA','#0B6E4F'],
+ usr:['User journey','#57575C']};
+const MIX=(hex,a)=>{const n=parseInt(hex.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255,m=v=>Math.round(v*a+255*(1-a));
+ return '#'+((1<<24)+(m(r)<<16)+(m(g)<<8)+m(b)).toString(16).slice(1)};
 const X=i=>16+i*154, W=132;
 const LY={u:22,fa:120,fb:188,ba:278,bb:348,bc:416,sa:492,sb:552};
 const C=[
@@ -127,7 +129,7 @@ DIV.forEach(d=>html+=`<div class="div" style="top:${d[0]}px"></div>`);
 html+=`<div class="grp" id="grp"><span>Business rule engine</span></div>`;
 C.forEach(c=>{const s=SYS[c[1]],h=c[5]||CH;
  M[c[0]]={x:X(c[2]),y:c[3],w:W,h};
- html+=`<button class="c" id="${c[0]}" style="left:${X(c[2])}px;top:${c[3]}px;width:${W}px;height:${h}px;background:${s[1]};border-color:${s[1]}"><h5>${s[0]}</h5><p>${c[4]}</p></button>`;
+ html+=`<button class="c" id="${c[0]}" style="--c:${s[1]};--tint:${MIX(s[1],.06)};left:${X(c[2])}px;top:${c[3]}px;width:${W}px;height:${h}px"><h5>${s[0]}</h5><p>${c[4]}</p></button>`;
  if(c[6]){const above=c[3]>66;html+=`<div class="note" id="n_${c[0]}" style="left:${X(c[2])-8}px;${above?'bottom:'+(HH-c[3]+8)+'px':'top:'+(c[3]+h+8)+'px'};width:${W+16}px">${c[6]}</div>`}});
 cv.insertAdjacentHTML('beforeend',html);
 {const g=$('grp'),a=M.v5,b=M.v8;g.style.cssText+=`left:${a.x-9}px;top:${a.y-13}px;width:${b.x+W-a.x+18}px;height:${a.h+22}px`}
