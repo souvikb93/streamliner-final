@@ -3,7 +3,7 @@ html,body{width:100%}body{display:block!important}body>div{width:100%}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:transparent;font-family:'Uncut Sans',-apple-system,sans-serif;color:#121212;-webkit-font-smoothing:antialiased}
 .wrap{padding:4px}
-.canvas{display:grid;grid-template-columns:1fr 120px 250px;align-items:center;position:relative}
+.canvas{display:grid;grid-template-columns:1fr 72px 250px;align-items:center;position:relative}
 .chain{display:flex;flex-direction:column;gap:8px}
 .row{position:relative;overflow:hidden;display:grid;grid-template-columns:28px 1fr auto 92px;gap:12px;align-items:center;background:#fff;border:1px solid #E5E5E5;border-radius:12px;padding:10px 14px;transition:border-color .3s,background .3s,opacity .3s}
 .row .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:#E3F0FA;z-index:0}
@@ -18,10 +18,10 @@ html,body{background:transparent;font-family:'Uncut Sans',-apple-system,sans-ser
 .row.fail{border-color:#F2A7A7;background:#FDF5F5}.row.fail .st{color:#C62828}.row.fail .n{background:#FBDADA;color:#C62828}
 .row.flag{border-color:#F5C97A;background:#FFF9EE}.row.flag .st{color:#A15C00}.row.flag .n{background:#FFF1DB;color:#A15C00}
 .row.skip{opacity:.45}
-svg.lk{width:120px;align-self:stretch;height:100%;overflow:visible;display:block}
-svg.lk .base path{fill:none;stroke:#D4D4D8;stroke-width:1.2;stroke-dasharray:3 5;opacity:.7;transition:opacity .5s}
-svg.lk.decided .base path{opacity:.25}
-svg.lk .act path{fill:none;stroke-width:2.4;stroke-linecap:round;transition:opacity .6s}
+svg.lk{width:72px;align-self:stretch;height:100%;overflow:visible;display:block}
+svg.lk path{fill:none;stroke:#D4D4D8;stroke-width:1.5;stroke-dasharray:4 5;transition:stroke .3s}
+svg.lk path.stem{stroke:#A1A1AA;stroke-dasharray:none}
+svg.lk path.on{stroke-dasharray:none;stroke-width:2.5}
 .outs{display:flex;flex-direction:column;gap:12px}
 .out{border:1px solid #E5E5E5;background:#fff;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;transition:background .35s,border-color .35s,color .35s,opacity .35s,transform .35s}
 .out b{font-size:14px;font-weight:600}
@@ -45,45 +45,28 @@ const IC={chk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
  f:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
  g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 6v8M12 18h.01"/></svg>'};
 const LB={chk:'Checking',p:'Pass',f:'Fail',g:'Review',s:'Skipped',i:''},CL={p:'pass',f:'fail',g:'flag',s:'skip'};
-const TO={p:'a',f:'r',g:'m'},COL={a:'#1E8A4C',r:'#C62828',m:'#F5A524'};
-const CHECK=1500,DRAW=800,SHOW=1500,SKIP=180,HOLD=4200,GAP=500,LW=120;
+
+const CHECK=1500,SHOW=1300,SKIP=180,HOLD=4200,GAP=500;
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const NS='http://www.w3.org/2000/svg';
 const $=id=>document.getElementById(id),chain=$('chain'),lk=$('lk'),outs=$('outs');
 chain.innerHTML=S.map((x,k)=>`<div class="row"><div class="fill"></div><div class="n">${k+1}</div><b>${x.n}</b><span class="src">${x.src}</span><span class="st"></span></div>`).join('');
-const rows=[...chain.children],OB=[...outs.children],OI={a:0,r:1,m:2};
-lk.innerHTML='<g class="base"></g><g class="act"></g>';
-const baseG=lk.querySelector('.base'),actG=lk.querySelector('.act');
-let run=0,cur=0,recs=[],curOut=null;
+const rows=[...chain.children],OB=[...outs.children];
+let run=0,cur=0,curOut=null;
+const COL={a:'#1E8A4C',r:'#C62828',m:'#F5A524'};
 function later(fn,ms){const id=run;setTimeout(()=>{if(id===run)fn()},ms)}
-function geo(k,o){const L=lk.getBoundingClientRect(),a=rows[k].getBoundingClientRect(),b=OB[OI[o]].getBoundingClientRect();
- const y1=a.top+a.height/2-L.top,y2=b.top+b.height/2-L.top;return `M0,${y1} C${LW*.55},${y1} ${LW*.45},${y2} ${LW},${y2}`}
-function mk(d,cls){const p=document.createElementNS(NS,'path');p.setAttribute('d',d);if(cls)p.setAttribute('class',cls);return p}
-function drawBase(){baseG.innerHTML='';const H=lk.getBoundingClientRect().height;lk.setAttribute('viewBox',`0 0 ${LW} ${H}`);
- for(let k=0;k<S.length;k++)for(const o of ['a','r','m'])baseG.appendChild(mk(geo(k,o)))}
-function addAct(k,o,animate){const d=geo(k,o),p=mk(d);p.setAttribute('pathLength',100);p.style.stroke=COL[o];
- actG.appendChild(p);const rec={k,o,el:p};recs.push(rec);
- if(!animate||reduce){p.style.strokeDasharray='none';return rec}
- p.style.strokeDasharray='100 100';p.style.strokeDashoffset='100';p.getBoundingClientRect();
- p.style.transition=`stroke-dashoffset ${DRAW}ms cubic-bezier(.4,0,.2,1)`;p.style.strokeDashoffset='0';
- const dot=document.createElementNS(NS,'circle');dot.setAttribute('r',4.5);dot.setAttribute('fill',COL[o]);dot.setAttribute('stroke','#fff');dot.setAttribute('stroke-width',1.5);actG.appendChild(dot);
- const len=p.getTotalLength(),t0=performance.now(),id=run;
- (function mv(now){const u=Math.min(1,(now-t0)/DRAW),e=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2,pt=p.getPointAtLength(len*e);
-  dot.setAttribute('cx',pt.x);dot.setAttribute('cy',pt.y);
-  if(u<1&&id===run)requestAnimationFrame(mv);else{dot.remove()}})(t0);
- return rec}
-function redraw(){drawBase();actG.innerHTML='';const old=recs;recs=[];old.forEach(r=>{const n=addAct(r.k,r.o,false);if(curOut&&r.o!==curOut)n.el.style.opacity='.18'})}
-function paintOutcome(o){curOut=o;outs.classList.toggle('decided',!!o);lk.classList.toggle('decided',!!o);
- OB.forEach(b=>b.classList.toggle('on',b.dataset.o===o));
- recs.forEach(r=>{r.el.style.opacity=(!o||r.o===o)?'':'.18'})}
+function drawLinks(){const L=lk.getBoundingClientRect(),H=L.height;lk.setAttribute('viewBox',`0 0 72 ${H}`);
+ const y0=H/2;lk.innerHTML=`<path class="stem" d="M0,${y0} H18"/>`+OB.map(o=>{const b=o.getBoundingClientRect(),y=b.top+b.height/2-L.top;return `<path data-o="${o.dataset.o}" d="M18,${y0} C46,${y0} 44,${y} 72,${y}"/>`}).join('');paintOutcome(curOut)}
+function paintOutcome(o){curOut=o;outs.classList.toggle('decided',!!o);OB.forEach(b=>b.classList.toggle('on',b.dataset.o===o));
+ const st=lk.querySelector('.stem');if(st)st.style.stroke=o?COL[o]:'';
+ lk.querySelectorAll('path[data-o]').forEach(p=>{const on=p.dataset.o===o;p.classList.toggle('on',on);p.style.stroke=on?COL[o]:''})}
 function setRow(k,st){const r=rows[k],f=r.querySelector('.fill');r.className='row'+(st==='chk'?' chk':CL[st]?' '+CL[st]:'');
  r.querySelector('.st').innerHTML=(IC[st]||'')+LB[st];
  if(st==='chk'&&!reduce){f.style.transition='none';f.style.width='0';f.offsetWidth;f.style.transition=`width ${CHECK}ms linear`;f.style.width='100%'}else{f.style.transition='none';f.style.width='0'}}
-function start(c){run++;cur=c;recs=[];actG.innerHTML='';rows.forEach((_,k)=>setRow(k,'i'));paintOutcome(null);later(()=>step(0),GAP*2)}
+function start(c){run++;cur=c;rows.forEach((_,k)=>setRow(k,'i'));paintOutcome(null);later(()=>step(0),GAP*2)}
 function step(k){const r=C[cur].s[k];
  if(r==='s'){setRow(k,'s');if(k<4)later(()=>step(k+1),SKIP);else later(finish,SHOW);return}
  setRow(k,'chk');
- later(()=>{setRow(k,r);addAct(k,TO[r],true);later(()=>k<4?step(k+1):finish(),SHOW)},CHECK)}
+ later(()=>{setRow(k,r);later(()=>k<4?step(k+1):finish(),SHOW)},CHECK)}
 function finish(){paintOutcome(C[cur].o);later(()=>start((cur+1)%3),HOLD)}
-drawBase();addEventListener('resize',redraw);if(document.fonts)document.fonts.ready.then(redraw);
+drawLinks();addEventListener('resize',drawLinks);if(document.fonts)document.fonts.ready.then(drawLinks);
 start(0);</script></body></html>
