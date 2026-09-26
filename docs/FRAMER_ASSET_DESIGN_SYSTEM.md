@@ -165,7 +165,14 @@ tighter the corner.
 | `--r-card` | 16px | a card sitting on that surface |
 | `--r-inner` | 12px | a chip, control, or card nested inside a card |
 | `--r-node` | 8px | dense diagram nodes, blueprint cells |
+| `--r-xs` | 4px | bars, ticks and swatches under 16px tall, where 8px would look like a lozenge |
 | `--r-pill` | 999px | pills, toggles, dots |
+
+**Exemption.** The two service blueprints (`iVhhBwFBm`, `riEAs3sap`) keep their own
+8.5–9.5px type. Their swimlane geometry — lane bands, dividers, card heights — is computed
+from those sizes, and restepping the text reflows the lanes. They follow the weight, case and
+radius rules like everything else; only the size remap is skipped. Any future fixed-geometry
+diagram gets the same treatment, and says so in a comment at the top of the file.
 
 Before this rule the assets used sixteen different radii (2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14,
 16, 18, 20, 22, 999). Anything not on the list above is drift.
