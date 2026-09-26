@@ -1,27 +1,31 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 @font-face{font-family:'Uncut Sans';src:url(https://cdn.jsdelivr.net/gh/kaspernordkvist/uncut_sans@b3b42467781e3bd98c68f2d70eba325196e7d9c5/Webfonts/UncutSans-Variable.woff2) format('woff2');font-weight:300 700;font-style:normal;font-display:swap}
+:root{--t-display:40px;--t-title-lg:24px;--t-title:18px;--t-body:14px;--t-caption:12px;--t-micro:10px;--r-surface:24px;--r-card:16px;--r-inner:12px;--r-node:8px;--r-xs:4px;--r-pill:999px}
+@media (max-width:1023px){:root{--t-display:30px;--t-title-lg:18px;--t-title:16px}}
+@media (max-width:767px){:root{--t-display:22px;--t-title-lg:16px;--t-title:15px}}
+
 :root{--ink:#121212;--ink2:#454548;--ink3:#696970;--line:#E9E9EC;--line2:#D9D9DE;--brand:#0672CB;--deep:#06356E;--green:#1E8A4C;--green-dot:#3DDC84}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;min-height:100%;overflow:hidden;background:transparent;font-family:'Uncut Sans',-apple-system,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
 body{display:block!important}
 .app{width:100vw;max-width:1200px;padding:2px;display:flex;flex-direction:column}
 .top{display:flex;align-items:center;padding:2px}
-.pick{flex:none;display:inline-flex;align-items:center;justify-content:center;background:#EFEFF1;padding:2px;border-radius:8px}
-.opt{font:inherit;position:relative;display:flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:6px;border:0;background:transparent;cursor:pointer;color:rgba(113,113,122,.7);font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.pick{flex:none;display:inline-flex;align-items:center;justify-content:center;background:#EFEFF1;padding:2px;border-radius:var(--r-node)}
+.opt{font:inherit;position:relative;display:flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:var(--r-node);border:0;background:transparent;cursor:pointer;color:rgba(113,113,122,.7);font-size:var(--t-body);font-weight:500;white-space:nowrap;transition:all .2s}
 .opt i{display:none;width:7px;height:7px;border-radius:50%;background:#D9D9DE;flex:none;transition:background .3s,transform .3s}
 .opt:hover{color:#71717A}
 .opt.on{color:#09090B;font-weight:600}
 .opt.on i{background:var(--green-dot);transform:scale(1.15);animation:bl 1.3s ease-in-out infinite;box-shadow:0 0 0 0 rgba(61,220,132,.5)}
 @keyframes bl{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(61,220,132,.45)}50%{opacity:.4;box-shadow:0 0 0 4px rgba(61,220,132,0)}}
 .opt:focus-visible{outline:2px solid rgba(161,161,170,.7);outline-offset:2px}
-.pill{position:absolute;top:2px;left:2px;height:32px;border-radius:6px;background:#fff;border:1px solid #E1E1E5;box-shadow:0 1px 2px 0 rgba(18,18,18,.06);z-index:0;transition:transform .42s cubic-bezier(.34,1.24,.5,1),width .42s cubic-bezier(.34,1.24,.5,1)}
+.pill{position:absolute;top:2px;left:2px;height:32px;border-radius:var(--r-node);background:#fff;border:1px solid #E1E1E5;box-shadow:0 1px 2px 0 rgba(18,18,18,.06);z-index:0;transition:transform .42s cubic-bezier(.34,1.24,.5,1),width .42s cubic-bezier(.34,1.24,.5,1)}
 .pick{position:relative}.opt{z-index:1}
-.canvas{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 1px 2px rgba(18,18,18,.03)}
+.canvas{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:var(--r-surface);padding:24px;box-shadow:0 1px 2px rgba(18,18,18,.03)}
 svg.map{display:block;width:100%;height:auto;overflow:visible}
 .lab{font-family:'Uncut Sans';pointer-events:none;user-select:none}
 .steps{margin-top:24px;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:nowrap;align-items:flex-start;min-height:56px}
-.s{flex:none;display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 7px;font-size:11px;font-weight:500;line-height:1.15;color:var(--ink3);white-space:nowrap;text-align:center;transition:color .3s}
+.s{flex:none;display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 7px;font-size:var(--t-micro);font-weight:500;line-height:1.15;color:var(--ink3);white-space:nowrap;text-align:center;transition:color .3s}
 .s .dot{flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid #C9C9CE;background:#fff;display:grid;place-items:center;transition:all .3s}
 .s.done{color:var(--ink2)}
 .s.done .dot{background:var(--green);border-color:var(--green)}
@@ -30,10 +34,10 @@ svg.map{display:block;width:100%;height:auto;overflow:visible}
 .s.now .dot{border-color:var(--green);border-width:2.5px;background:#fff}
 .s.now .dot::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);animation:pu 1.4s ease-in-out infinite}
 @keyframes pu{50%{transform:scale(.5);opacity:.6}}
-.sep{position:relative;overflow:hidden;flex:1 1 0;min-width:8px;height:2px;background:var(--line2);margin:9px 0 0;border-radius:2px}
-.sep::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--f,0%);background:var(--green);border-radius:2px}
-@media (max-width:1100px){.s{font-size:11px;padding:0 9px 0 7px;gap:6px}.s .dot{width:13px;height:13px}.sep{margin:0 3px}}
-@media (min-width:900px){body{min-height:700px}}
+.sep{position:relative;overflow:hidden;flex:1 1 0;min-width:8px;height:2px;background:var(--line2);margin:9px 0 0;border-radius:var(--r-xs)}
+.sep::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--f,0%);background:var(--green);border-radius:var(--r-xs)}
+@media (max-width:1100px){.s{font-size:var(--t-micro);padding:0 9px 0 7px;gap:6px}.s .dot{width:13px;height:13px}.sep{margin:0 3px}}
+@media (min-width:900px){body{min-height:674px}}
 @media (max-width:760px){.top{flex-direction:column;align-items:stretch;gap:16px}.pick{align-self:stretch;overflow-x:auto;justify-content:flex-start}.canvas{overflow-x:auto;-webkit-overflow-scrolling:touch}.canvas>.map{width:900px;min-width:900px}.steps{min-width:1000px;min-height:52px}}
 @media (max-width:440px){.opt{height:36px}.canvas{padding:16px}}
 @media (prefers-reduced-motion:reduce){.s.now .dot::after{animation:none}.pill{transition:none}.opt.on i{animation:none}}

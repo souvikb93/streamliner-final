@@ -81,19 +81,94 @@ Pin the commit — a bare `@main` is not reproducible. Never load Google Fonts i
 SVG text needs the family named explicitly (`font-family="<Family>"`), it does not inherit.
 
 ### Scale
-| role | size | weight | line-height |
-|---|---|---|---|
-| card title | 15–17px | 600 | 1.3 |
-| body | 12.5–14px | 400 | 1.45–1.5 |
-| supporting | 11.5–12px | 400 | 1.45 |
-| label / eyebrow | 11–12px | 600 | 1.2 |
-| chip, dense diagram cell | 9.5–11px | 500–700 | 1.3 |
 
-- **Never `text-transform:uppercase`.** It reads as machine-generated. Sentence case throughout.
-  Acronyms stay capitalised because they are acronyms (CRE, SODS, SFDC), never whole phrases.
-- Tracking `.01–.02em` on labels; `-.01em` on headings; default on body.
-- 9.5px is the floor, and only inside a dense diagram cell. Nothing below it.
+Measured from the published Framer page at 1200 / 810 / 390, then mapped onto Uncut Sans.
+The page sets its headings in BDO Grotesk; **embeds do not use BDO.** An embed is UI sitting
+inside a section, not a second voice competing with the section heading, so it stays on the
+body family and starts one step below the Framer heading it sits under. What we take from
+Framer is the *hierarchy and the responsive steps*, not the typeface.
+
+Framer's own scale, for reference:
+
+| role | 1200 | 810 | 390 |
+|---|---|---|---|
+| H3 | 56/64, -1.5 | 40/48, -1 | 28/36, -.5 |
+| H4 | 40/48, -1 | 30/38, -.5 | 22/30, -.5 |
+| H5 | 30/38, -.5 | 22/30 | 18/26 |
+| H6 | 24/32 | 18/26 | 16/24 |
+| body | 16/26 | 16/26 | 15/26 |
+| body small | 14/21.7 | 14/21.7 | 14/21.7 |
+
+**Embed tokens.** These are the only sizes an asset may use:
+
+| token | ≥1024 | 768–1023 | <768 | weight | tracking |
+|---|---|---|---|---|---|
+| `--t-display` stat number | 40/48 | 30/38 | 22/30 | 600 | -.02em |
+| `--t-title-lg` group heading inside an asset | 24/32 | 18/26 | 16/24 | 600 | -.01em |
+| `--t-title` card title | 18/26 | 16/24 | 15/22 | 600 | -.01em |
+| `--t-body` default | 14/21 | 14/21 | 14/21 | 400 | 0 |
+| `--t-caption` supporting line | 12/20 | 12/20 | 12/20 | 400 | 0 |
+| `--t-micro` chip, dense diagram cell | 10/16 | 10/16 | 10/16 | 500 | .02em |
+
+- `--t-body` is Framer's **body small**, not its body. An embed is denser than page prose.
+- **Exception — reading-heavy assets** (synthesis, decisions, anything that is mostly
+  sentences rather than diagram): use Framer body exactly — 16/26, dropping to 15/26 below
+  768 — so the embed does not read as fine print beside the page copy.
+- Diagram-internal labels that must fit a fixed node may go to `--t-micro` and no further.
+  10px is the floor.
+
+Ship them as custom properties and redeclare in two media queries. Nothing else:
+
+    :root{--t-display:40px;--t-title-lg:24px;--t-title:18px;--t-body:14px;--t-caption:12px;--t-micro:10px}
+    @media (max-width:1023px){:root{--t-display:30px;--t-title-lg:18px;--t-title:16px}}
+    @media (max-width:767px){:root{--t-display:22px;--t-title-lg:16px;--t-title:15px}}
+
+### Weight
+
+Three weights, no others. Framer uses 400 for body and 600 for its Uncut heading; assets match.
+
+| weight | use |
+|---|---|
+| 400 | body, captions, everything by default |
+| 500 | chips, micro labels, tab labels |
+| 600 | card titles, stat numbers, the active tab |
+
+**700 is not in the system.** It was in ten assets and reads heavier than anything Framer
+renders. **450 and 300 are not in the system either** — 300 only ever appeared as the
+`font-weight:300 700` range in `@font-face`, which is the variable axis, not a usage.
+
+### Case
+
+| element | case |
+|---|---|
+| card title, stat label, tab label | **Title Case** — matches every Framer H4/H5 on the page |
+| body, captions, supporting lines | sentence case |
+| acronyms | stay capitalised because they are acronyms (CRE, SODS, SFDC) |
+
+- **Never `text-transform:uppercase`.** It reads as machine-generated.
+- An asset **never prints its own eyebrow or section heading.** The Framer H4 directly above
+  the embed already names the section; a second label inside the frame says it twice.
+- Tracking `-.01em` on titles, default on body.
 - Numbers in columns, prices and timers: `font-variant-numeric:tabular-nums`.
+
+---
+
+## 3b. Radius
+
+Taken from the Framer card components on the page — 24 is the dominant surface radius there,
+with 16 and 12 used inside. Five steps, and they carry hierarchy: the further in you nest, the
+tighter the corner.
+
+| token | value | use |
+|---|---|---|
+| `--r-surface` | 24px | the outermost frame of an asset, when it has one |
+| `--r-card` | 16px | a card sitting on that surface |
+| `--r-inner` | 12px | a chip, control, or card nested inside a card |
+| `--r-node` | 8px | dense diagram nodes, blueprint cells |
+| `--r-pill` | 999px | pills, toggles, dots |
+
+Before this rule the assets used sixteen different radii (2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14,
+16, 18, 20, 22, 999). Anything not on the list above is drift.
 
 ---
 
