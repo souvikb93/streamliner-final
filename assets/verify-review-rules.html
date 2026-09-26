@@ -5,12 +5,12 @@ html,body{background:transparent;font-family:'Uncut Sans',-apple-system,sans-ser
 .wrap{padding:4px}
 .canvas{display:grid;grid-template-columns:1fr 72px 250px;align-items:center;position:relative}
 .chain{display:flex;flex-direction:column;gap:8px}
-.row{position:relative;overflow:hidden;display:grid;grid-template-columns:28px 1fr auto 92px;gap:12px;align-items:center;background:#fff;border:1px solid #E5E5E5;border-radius:12px;padding:10px 14px;transition:border-color .3s,background .3s,opacity .3s}
+.row{position:relative;overflow:hidden;display:grid;grid-template-columns:28px auto 1fr 92px;gap:12px;align-items:center;background:#fff;border:1px solid #E5E5E5;border-radius:12px;padding:10px 14px;transition:border-color .3s,background .3s,opacity .3s}
 .row .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:#E3F0FA;z-index:0}
 .row>*:not(.fill){position:relative;z-index:1}
 .n{width:28px;height:28px;border-radius:50%;background:#F0F1F4;display:grid;place-items:center;font-size:12px;font-weight:600;color:#454548;transition:background .3s,color .3s}
 .row b{font-size:14px;font-weight:600}
-.src{font-size:10.5px;font-weight:600;letter-spacing:.05em;color:#0063B8;background:#C8E3F7;border-radius:6px;padding:4px 7px;white-space:nowrap}
+.src{justify-self:start;font-size:10.5px;font-weight:600;letter-spacing:.05em;color:#0063B8;background:#C8E3F7;border-radius:6px;padding:4px 7px;white-space:nowrap}
 .st{display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:12px;font-weight:600;color:#696970}
 .st svg{width:14px;height:14px;flex:none}
 .row.chk{border-color:#0672CB}.row.chk .n{background:#0672CB;color:#fff}.row.chk .st{color:#0063B8}
@@ -49,7 +49,7 @@ const IC={chk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
  p:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',
  f:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
  g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 6v8M12 18h.01"/></svg>'};
-const LB={chk:'Checking',p:'Pass',f:'Fail',g:'Review',s:'Skipped',i:''},CL={p:'pass',f:'fail',g:'flag',s:'skip'};
+const LB={chk:'Checking',p:'Pass',f:'Fail',g:'Hold',s:'Skipped',i:''},CL={p:'pass',f:'fail',g:'flag',s:'skip'};
 
 const CHECK=1500,SHOW=1300,SKIP=180,HOLD=4200,GAP=500;
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
